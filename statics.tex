@@ -1,0 +1,106 @@
+\documentclass[12pt]{article}
+
+\usepackage{mathpartir}
+
+\title{Instruction Graph Statics}
+\author{Andrew Benson}
+\date{23 February 2016}
+
+\begin{document}
+\maketitle
+
+% Define commands for common syntax and judgments
+\newcommand{\singletonset}[1]{\mathtt{\{#1\}}}
+
+\newcommand{\valid}[1]{\mathtt{#1~valid}}
+\newcommand{\defvertices}[2]{\mathtt{#1~definesvertices~#2}}
+\newcommand{\connectsto}[3]{\mathtt{#1~connectsto~#2~in~#3}}
+\newcommand{\iconnectsto}[3]{\mathtt{#1~connectsto_{index}~#2~in~#3}}
+\newcommand{\accesses}[3]{\mathtt{#1~accesses~#2~in~#3}}
+\newcommand{\doonce}[2]{\mathtt{Do(#1,~#2)}}
+\newcommand{\dountil}[3]{\mathtt{DoUntil(#1,~#2,~#3)}}
+\newcommand{\conditional}[3]{\mathtt{Conditional(#1,~#2,~#3)}}
+\newcommand{\goto}[1]{\mathtt{GoTo(#1)}}
+
+\newcommand{\emptyprogram}{\mathtt{EmptyProgram}}
+\newcommand{\program}[2]{\mathtt{Program(#1,~#2)}}
+\newcommand{\start}[1]{\mathtt{Start(#1)}}
+\newcommand{\singleton}[1]{\mathtt{Singleton(#1)}}
+\newcommand{\cons}[2]{\mathtt{Cons(#1,~#2)}}
+\newcommand{\vertex}[2]{\mathtt{Vertex(#1,~#2)}}
+
+\section{Validity}
+
+\begin{mathpar}
+  \inferrule{ }{\valid{\emptyprogram}}
+
+  \inferrule{
+    \defvertices{vdecls}{V}\\
+    \iconnectsto{s}{V}{V}
+  }{
+    \valid{\program{vdecls}{\start{s}}}
+  }
+\end{mathpar}
+
+\section{Defined Vertices}
+
+\begin{mathpar}
+  \inferrule{ }{\defvertices{\singleton{vdecl}}{\singletonset{vdecl}}}
+
+  \inferrule{
+    \defvertices{vdecls}{U}\\
+    \mathtt{vdecl} \notin \mathtt{U}
+  }{
+    \defvertices{\cons{vdecl}{vdecls}}{U \cup \singletonset{vdecl}}
+  }
+\end{mathpar}
+
+\section{Connected Vertices}
+
+\begin{mathpar}
+  \inferrule{
+    \vertex{n}{vcontent} \in V\\
+    \connectsto{\vertex{n}{vcontent}}{U}{V}
+  }{
+    \iconnectsto{n}{U}{V}
+  }
+
+  \inferrule{
+    \accesses{vcontent}{U}{V}
+  }{
+    \connectsto{\vertex{n}{vcontent}}
+      {U \cup \singletonset{\vertex{n}{vcontent}}}{V}
+  }
+
+  \inferrule{
+    \vertex{n}{vcontent} \in V\\
+    \connectsto{\vertex{n}{vcontent}}{U}{V}
+  }{
+    \accesses{\doonce{action}{Next(n)}}{U}{V}
+  }
+
+  \inferrule{
+    \vertex{n}{vcontent} \in V\\
+    \connectsto{\vertex{n}{vcontent}}{U}{V}
+  }{
+    \accesses{\dountil{action}{condition}{Next(n)}}{U}{V}
+  }
+
+  \inferrule{
+    \vertex{n}{vcontent} \in V\\
+    \vertex{m}{vcontent} \in V\\
+    \connectsto{\vertex{n}{vcontent}}{U}{V}
+  }{
+    \accesses{\conditional{condition}{Next(n)}{Next(m)}}{U}{V}
+  }
+
+  \inferrule{
+    \vertex{n}{vcontent} \in V\\
+    \connectsto{\vertex{n}{vcontent}}{U}{V}
+  }{
+    \accesses{\goto{Next(n)}}{U}{V}
+  }
+
+\end{mathpar}
+
+\end{document}

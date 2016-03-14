@@ -1,0 +1,167 @@
+\documentclass[12pt]{article}
+
+\usepackage{mathpartir}
+
+\title{Instruction Graph Dynamics}
+\author{Andrew Benson}
+\date{1 March 2016}
+
+\begin{document}
+\maketitle
+
+% Define commands for common syntax and judgments
+\newcommand{\singletonset}[1]{\mathtt{\{#1\}}}
+
+\newcommand{\valid}[1]{\mathtt{#1~valid}}
+\newcommand{\defvertices}[2]{\mathtt{#1~definesvertices~#2}}
+\newcommand{\connectsto}[3]{\mathtt{#1~connectsto~#2~in~#3}}
+\newcommand{\iconnectsto}[3]{\mathtt{#1~connectsto_{index}~#2~in~#3}}
+\newcommand{\accesses}[3]{\mathtt{#1~accesses~#2~in~#3}}
+\newcommand{\startsat}[3]{\mathtt{#1~startsat~#2~in~#3}}
+\newcommand{\dystate}[4]{\mathtt{#1~with~(#2,~#3,~#4)}}
+\newcommand{\continuesto}[2]{\mathtt{#1~continuesto~#2}}
+\newcommand{\continuestoend}[1]{\mathtt{#1~continuesto~End~with~(V,~inputs,~outputs)}}
+\newcommand{\terminates}[2]{\mathtt{#1~terminates~doing~#2}}
+\newcommand{\programdoes}[3]{\mathtt{#1~does~#2~on~#3}}
+
+\newcommand{\emptyprogram}{\mathtt{EmptyProgram}}
+\newcommand{\program}[2]{\mathtt{Program(#1,~#2)}}
+\newcommand{\start}[1]{\mathtt{Start(#1)}}
+\newcommand{\singleton}[1]{\mathtt{Singleton(#1)}}
+\newcommand{\cons}[2]{\mathtt{Cons(#1,~#2)}}
+\newcommand{\vertex}[2]{\mathtt{Vertex(#1,~#2)}}
+\newcommand{\doonce}[2]{\mathtt{Do(#1,~#2)}}
+\newcommand{\dountil}[3]{\mathtt{DoUntil(#1,~#2,~#3)}}
+\newcommand{\conditional}[3]{\mathtt{Conditional(#1,~#2,~#3)}}
+\newcommand{\goto}[1]{\mathtt{GoTo(#1)}}
+\newcommand{\next}[1]{\mathtt{Next(#1)}}
+\newcommand{\finalvertex}[0]{\mathtt{End}}
+
+\section{continuesto}
+
+\begin{mathpar}
+  \inferrule{
+    \vertex{n'}{vcontent} \in \mathtt{V}
+  }{
+    \dystate{\vertex{n}{\doonce{action}{\next{n'}}}}{V}{inputs}{outputs}\\
+    \mathtt{continuesto~}
+    \dystate{\vertex{n'}{vcontent}}{V}{inputs}{action::output}
+  }
+
+  \inferrule{
+    \vertex{n'}{vcontent} \in \mathtt{V}
+  }{
+    \dystate{\vertex{n}{\dountil{action}{cond}{\next{n'}}}}{V}{true::inputs}{outputs}\\
+    \mathtt{continuesto~}
+    \dystate{\vertex{n'}{vcontent}}{V}{inputs}{action::output}
+  }
+
+  \inferrule{
+  }{
+    \dystate{\vertex{n}{\dountil{action}{cond}{vnext}}}{V}{false::inputs}{outputs}\\
+    \mathtt{continuesto~}\\
+    \dystate{\vertex{n}{\dountil{action}{cond}{vnext}}}{V}{inputs}{action::output}
+  }
+
+  \inferrule{
+    \vertex{n'}{vcontent} \in \mathtt{V}
+  }{
+    \dystate{\vertex{n}{\conditional{cond}{\next{n'}}{falsecase}}}{V}{true::inputs}{outputs}\\
+    \mathtt{continuesto~}
+    \dystate{\vertex{n'}{vcontent}}{V}{inputs}{output}
+  }
+
+  \inferrule{
+    \vertex{n'}{vcontent} \in \mathtt{V}
+  }{
+    \dystate{\vertex{n}{\conditional{cond}{truecase}{\next{n'}}}}{V}{false::inputs}{outputs}\\
+    \mathtt{continuesto~}
+    \dystate{\vertex{n'}{vcontent}}{V}{inputs}{output}
+  }
+
+  \inferrule{
+    \vertex{n'}{vcontent} \in \mathtt{V}
+  }{
+    \dystate{\vertex{n}{\goto{\next{n'}}}}{V}{inputs}{outputs}\\
+    \mathtt{continuesto~}
+    \dystate{\vertex{n'}{vcontent}}{V}{inputs}{output}
+  }
+\end{mathpar}
+
+\section{more continuesto (End cases)}
+
+\begin{mathpar}
+  \inferrule{
+  }{
+    \dystate{\vertex{n}{\doonce{action}{\finalvertex}}}{V}{inputs}{outputs}\\
+    \mathtt{continuesto~}
+    \dystate{End}{V}{inputs}{action::outputs}
+  }
+
+  \inferrule{
+  }{
+    \dystate{\vertex{n}{\dountil{action}{cond}{\finalvertex}}}{V}{true::inputs}{outputs}\\
+    \mathtt{continuesto~}
+    \dystate{End}{V}{inputs}{action::outputs}
+  }
+
+  \inferrule{
+  }{
+    \dystate{\vertex{n}{\conditional{cond}{truecase}{\finalvertex}}}{V}{false::inputs}{outputs}\\
+    \mathtt{continuesto~}
+    \dystate{End}{V}{inputs}{outputs}
+  }
+
+  \inferrule{
+  }{
+    \dystate{\vertex{n}{\conditional{cond}{\finalvertex}{falsecase}}}{V}{true::inputs}{outputs}\\
+    \mathtt{continuesto~}
+    \dystate{End}{V}{inputs}{outputs}
+  }
+
+  \inferrule{
+  }{
+    \dystate{\vertex{n}{\goto{\finalvertex}}}{V}{inputs}{outputs}\\
+    \mathtt{continuesto~}
+    \dystate{End}{V}{inputs}{outputs}
+  }
+
+\end{mathpar}
+
+\section{terminates}
+
+\begin{mathpar}
+  \inferrule{
+    \mathtt{vertexwithstate} \mathtt{~continuesto~}
+    \dystate{End}{V}{inputs}{outputs}
+  }{
+    \terminates{vertexwithstate}{outputs}
+  }
+
+  \inferrule{
+    \mathtt{vertexwithstate1} \mathtt{~continuesto~} \mathtt{vertexwithstate2}\\
+    \terminates{vertexwithstate2}{outputs}
+  }{
+    \terminates{vertexwithstate1}{outputs}
+  }
+\end{mathpar}
+
+\section{dynamics}
+
+\begin{mathpar}
+  \inferrule{
+    \defvertices{vdecls}{V}\\
+    \vertex{n}{vcontent} \in \mathtt{V}
+  }{
+    \startsat{\program{vdecls}{\start{n}}}{\vertex{n}{vcontent}}{V}
+  }
+
+  \inferrule{
+    \startsat{program}{svertex}{V}\\
+    \terminates{\dystate{svertex}{V}{inputs}{[~]}}{outputs}
+  }{
+    \programdoes{program}{outputs}{inputs}
+  }
+\end{mathpar}
+
+\end{document}

@@ -1,0 +1,4 @@
+mathpartir.sty
+IGinterpreter/__pycache__
+IGinterpreter/*.out
+IGinterpreter/parsetab.py
