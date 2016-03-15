@@ -1,106 +1,128 @@
 \documentclass[12pt]{article}
 
 \usepackage{mathpartir}
+\usepackage{amsmath}
 
 \title{Instruction Graph Statics}
 \author{Andrew Benson}
-\date{23 February 2016}
+\date{}
 
 \begin{document}
 \maketitle
 
 % Define commands for common syntax and judgments
-\newcommand{\singletonset}[1]{\mathtt{\{#1\}}}
+\newcommand{\nonterm}[1]{\langle\text{#1}\rangle}
+\newcommand{\term}[1]{\textbf{#1}}
 
-\newcommand{\valid}[1]{\mathtt{#1~valid}}
-\newcommand{\defvertices}[2]{\mathtt{#1~definesvertices~#2}}
-\newcommand{\connectsto}[3]{\mathtt{#1~connectsto~#2~in~#3}}
-\newcommand{\iconnectsto}[3]{\mathtt{#1~connectsto_{index}~#2~in~#3}}
-\newcommand{\accesses}[3]{\mathtt{#1~accesses~#2~in~#3}}
-\newcommand{\doonce}[2]{\mathtt{Do(#1,~#2)}}
-\newcommand{\dountil}[3]{\mathtt{DoUntil(#1,~#2,~#3)}}
-\newcommand{\conditional}[3]{\mathtt{Conditional(#1,~#2,~#3)}}
-\newcommand{\goto}[1]{\mathtt{GoTo(#1)}}
+\newcommand{\valid}[1]{\mathtt{#1}\ \textit{valid}}
+\newcommand{\defined}[2]{\mathtt{(#1,\ #2)}\ \textit{defined}}
+\newcommand{\match}[3]{\mathtt{(#1,\ #2,\ #3)}\ \textit{match}}
+\newcommand{\connected}[4]{\mathtt{(#1,\ #2,\ #3,\ #4)}\ \textit{connected}}
 
-\newcommand{\emptyprogram}{\mathtt{EmptyProgram}}
-\newcommand{\program}[2]{\mathtt{Program(#1,~#2)}}
-\newcommand{\start}[1]{\mathtt{Start(#1)}}
-\newcommand{\singleton}[1]{\mathtt{Singleton(#1)}}
-\newcommand{\cons}[2]{\mathtt{Cons(#1,~#2)}}
-\newcommand{\vertex}[2]{\mathtt{Vertex(#1,~#2)}}
+\newcommand{\singletonset}[1]{\{\mathtt{#1}\}}
+\newcommand{\mem}[2]{\mathtt{#1 \in #2}}
+\newcommand{\notmem}[2]{\mathtt{#1 \notin #2}}
 
 \section{Validity}
 
 \begin{mathpar}
-  \inferrule{ }{\valid{\emptyprogram}}
+  \inferrule{
+  }{
+    \valid{\emptyset}
+  }
 
   \inferrule{
-    \defvertices{vdecls}{V}\\
-    \iconnectsto{s}{V}{V}
+    \defined{vs}{U}\\
+    \connected{vs}{\emptyset}{s}{U}
   }{
-    \valid{\program{vdecls}{\start{s}}}
+    \valid{\term{P}(vs, s)}
   }
 \end{mathpar}
 
-\section{Defined Vertices}
+\section{Defined}
 
 \begin{mathpar}
-  \inferrule{ }{\defvertices{\singleton{vdecl}}{\singletonset{vdecl}}}
+  \inferrule{
+  }{
+    \defined{\term{S}(\term{V}(n, cont))}{\singletonset{n}}
+  }
 
   \inferrule{
-    \defvertices{vdecls}{U}\\
-    \mathtt{vdecl} \notin \mathtt{U}
+    \defined{vs}{U}\\
+    \notmem{n}{U}
   }{
-    \defvertices{\cons{vdecl}{vdecls}}{U \cup \singletonset{vdecl}}
+    \defined{\term{Cons}(\term{V}(n, cont), vs)}{U \cup \singletonset{n}}
   }
 \end{mathpar}
 
-\section{Connected Vertices}
+\section{Match}
 
 \begin{mathpar}
   \inferrule{
-    \vertex{n}{vcontent} \in V\\
-    \connectsto{\vertex{n}{vcontent}}{U}{V}
   }{
-    \iconnectsto{n}{U}{V}
+    \match{\term{S}(\term{V}(n, cont))}{n}{\term{V}(n, cont)}
   }
 
   \inferrule{
-    \accesses{vcontent}{U}{V}
+    \match{vs}{n}{\term{V}(n, cont)}
   }{
-    \connectsto{\vertex{n}{vcontent}}
-      {U \cup \singletonset{\vertex{n}{vcontent}}}{V}
+    \match{\term{Cons}(v, vs)}{n}{\term{V}(n, cont)}
   }
 
   \inferrule{
-    \vertex{n}{vcontent} \in V\\
-    \connectsto{\vertex{n}{vcontent}}{U}{V}
   }{
-    \accesses{\doonce{action}{Next(n)}}{U}{V}
+    \match{\term{Cons}(\term{V}(n, cont), vs)}{n}{\term{V}(n, cont)}
+  }
+\end{mathpar}
+
+\section{Connected}
+
+\begin{mathpar}
+  \inferrule{
+    \mem{n}{U_v}
+  }{
+    \connected{vs}{U_v}{n}{\emptyset}
   }
 
   \inferrule{
-    \vertex{n}{vcontent} \in V\\
-    \connectsto{\vertex{n}{vcontent}}{U}{V}
+    \match{vs}{n}{\term{V}(n, \term{End})}\\
+    \notmem{n}{U_v}
   }{
-    \accesses{\dountil{action}{condition}{Next(n)}}{U}{V}
+    \connected{vs}{U_v}{n}{\singletonset{n}}
   }
 
   \inferrule{
-    \vertex{n}{vcontent} \in V\\
-    \vertex{m}{vcontent} \in V\\
-    \connectsto{\vertex{n}{vcontent}}{U}{V}
+    \match{vs}{n}{\term{V}(n, \term{Do}(act, n'))}\\
+    \connected{vs}{U_v \cup \singletonset{n}}{n'}{U}\\
+    \notmem{n}{U_v}
   }{
-    \accesses{\conditional{condition}{Next(n)}{Next(m)}}{U}{V}
+    \connected{vs}{U_v}{n}{U \cup \singletonset{n}}
   }
 
   \inferrule{
-    \vertex{n}{vcontent} \in V\\
-    \connectsto{\vertex{n}{vcontent}}{U}{V}
+    \match{vs}{n}{\term{V}(n, \term{DoU}(act, cond, n'))}\\
+    \connected{vs}{U_v \cup \singletonset{n}}{n'}{U}\\
+    \notmem{n}{U_v}
   }{
-    \accesses{\goto{Next(n)}}{U}{V}
+    \connected{vs}{U_v}{n}{U \cup \singletonset{n}}
   }
 
+  \inferrule{
+    \match{vs}{n}{\term{V}(n, \term{Cond}(cond, n', n''))}\\
+    \connected{vs}{U_v \cup \singletonset{n}}{n'}{U}\\
+    \connected{vs}{U_v \cup U \cup \singletonset{n}}{n''}{U'}\\
+    \notmem{n}{U_v}
+  }{
+    \connected{vs}{U_v}{n}{U \cup U' \cup \singletonset{n}}
+  }
+
+  \inferrule{
+    \match{vs}{n}{\term{V}(n, \term{GoTo}(n'))}\\
+    \connected{vs}{U_v \cup \singletonset{n}}{n'}{U}\\
+    \notmem{n}{U_v}
+  }{
+    \connected{vs}{U_v}{n}{U \cup \singletonset{n}}
+  }
 \end{mathpar}
 
 \end{document}
