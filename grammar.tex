@@ -13,14 +13,14 @@
 \newcommand{\nterm}[1]{\textit{#1}}
 
 % Frequently used syntax
-\newcommand{\prog}[2]{\syn{P(}\nterm{#1}, \nterm{#2}\syn{)}}
-\newcommand{\sing}[1]{\syn{S(}\nterm{#1}\syn{)}}
-\newcommand{\cons}[2]{\nterm{#1}\syn{::}\nterm{#2}}
-\newcommand{\ver}[2]{\syn{V(}\nterm{#1}, \nterm{#2}\syn{)}}
-\newcommand{\doonce}[2]{\syn{do }\nterm{#1}\syn{ then }\nterm{#2}}
-\newcommand{\dountil}[3]{\syn{do }\nterm{#1}\syn{ until }\nterm{#2}\syn{ then }\nterm{#3}}
-\newcommand{\ifelse}[3]{\syn{if }\nterm{#1}\syn{ then }\nterm{#2}\syn{ else }\nterm{#3}}
-\newcommand{\goto}[1]{\syn{goto }\nterm{#1}}
+\newcommand{\prog}[2]{\syn{P(}#1, #2\syn{)}}
+\newcommand{\sing}[1]{\syn{S(}#1\syn{)}}
+\newcommand{\cons}[2]{#1\syn{::}#2}
+\newcommand{\ver}[2]{\syn{V(}#1, #2\syn{)}}
+\newcommand{\doonce}[2]{\syn{do }#1\syn{ then }#2}
+\newcommand{\dountil}[3]{\syn{do }#1\syn{ until }#2\syn{ then }#3}
+\newcommand{\ifelse}[3]{\syn{if }#1\syn{ then }#2\syn{ else }#3}
+\newcommand{\goto}[1]{\syn{goto }#1}
 \newcommand{\progend}[0]{\syn{end}}
 
 \begin{document}
@@ -29,20 +29,20 @@
 \begin{alignat*}{4}
   \sort{Program}\quad
     &\nterm{p}\quad & &::=\quad &
-      &\prog{vs}{n}\qquad & &\text{programs}\\
+      &\prog{\nterm{vs}}{\nterm{n}}\qquad & &\text{programs}\\
   \sort{Vertices}\quad
     &\nterm{vs}\quad & &::=\quad &
-      &\sing{v}\qquad & &\text{singleton}\\
-  &&&&&\cons{v}{vs}\qquad & &\text{cons}\\
+      &\sing{\nterm{v}}\qquad & &\text{singleton}\\
+  &&&&&\cons{\nterm{v}}{\nterm{vs}}\qquad & &\text{cons}\\
   \sort{Vertex}\quad
     &\nterm{v}\quad & &::=\quad &
-      &\ver{n}{c}\qquad & &\text{vertex}\\
+      &\ver{\nterm{n}}{\nterm{c}}\qquad & &\text{vertex}\\
   \sort{Content}\quad
     &\nterm{c}\quad & &::=\quad &
-      &\doonce{a}{n}\qquad & &\text{single action}\\
-  &&&&&\dountil{a}{cnd}{n}\qquad & &\text{open loop action}\\
-  &&&&&\ifelse{cnd}{n}{n}\qquad & & \text{conditional}\\
-  &&&&&\goto{n}\qquad & &\text{goto}\\
+      &\doonce{\nterm{a}}{\nterm{n}}\qquad & &\text{single action}\\
+  &&&&&\dountil{\nterm{a}}{\nterm{cnd}}{\nterm{n}}\qquad & &\text{open loop action}\\
+  &&&&&\ifelse{\nterm{cnd}}{\nterm{n}}{\nterm{n}}\qquad & & \text{conditional}\\
+  &&&&&\goto{\nterm{n}}\qquad & &\text{goto}\\
   &&&&&\progend\qquad & &\text{termination}
 \end{alignat*}
 
