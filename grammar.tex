@@ -11,8 +11,6 @@
 \newcommand{\syn}[1]{\textbf{#1}}
 \newcommand{\nterm}[1]{\textit{#1}}
 
-\newcommand{\nonterm}[1]{\langle\text{#1}\rangle}
-\newcommand{\term}[1]{\textbf{#1}}
 
 \begin{document}
 \maketitle
@@ -37,18 +35,6 @@
                                                      & &\text{conditional}\\
   &&&&&\syn{goto }\nterm{n}\qquad & &\text{goto}\\
   &&&&&\syn{end}\qquad & &\text{termination}
-  % \nonterm{program}\quad ::&=\quad \term{P}(\nonterm{vertices},\ \term{n}) &
-  % \nonterm{vertices}\quad ::&=\quad \term{S}(\nonterm{vertex})\quad
-  %                            |\quad \term{Cons}(\nonterm{vertex},\
-  %                                               \nonterm{vertices})\\
-  % \nonterm{vertex}\quad ::&=\quad \term{V}(\term{n},\ \nonterm{content})\\
-  % \nonterm{content}\quad ::&=\quad
-  %                     \term{Do}(\nonterm{action},\ \term{n})\quad\\
-  %            &|\qquad \term{DoU}(\nonterm{action},\
-  %                                    \nonterm{cond},\ \term{n})\\
-  %            &|\qquad \term{Cond}(\nonterm{cond},\ \term{n},\ \term{n})\\
-  %            &|\qquad \term{GoTo}(\term{n})\\
-  %            &|\qquad \term{End}
 \end{alignat*}
 
 We let $\nterm{n} \in \mathbb{Z}$, the integers.\\
