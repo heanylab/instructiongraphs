@@ -1,10 +1,15 @@
 \documentclass[12pt]{article}
 
 \usepackage{amsmath}
+\usepackage{amssymb}
 
 \title{Instruction Graph Grammar}
 \author{Andrew Benson}
 \date{}
+
+\newcommand{\sort}[1]{\mathtt{#1}}
+\newcommand{\syn}[1]{\textbf{#1}}
+\newcommand{\nterm}[1]{\textit{#1}}
 
 \newcommand{\nonterm}[1]{\langle\text{#1}\rangle}
 \newcommand{\term}[1]{\textbf{#1}}
@@ -12,30 +17,48 @@
 \begin{document}
 \maketitle
 
-\begin{align*}
-  \nonterm{program}\quad ::&=\quad \term{$\emptyset$}\quad
-                            |\quad \term{P}(\nonterm{vertices},\ \term{int})\\
-  \nonterm{vertices}\quad ::&=\quad \term{S}(\nonterm{vertex})\quad
-                             |\quad \term{Cons}(\nonterm{vertex},\
-                                                \nonterm{vertices})\\
-  \nonterm{vertex}\quad ::&=\quad \term{V}(\term{int},\ \nonterm{content})\\
-  \nonterm{content}\quad ::&=\quad
-                      \term{Do}(\nonterm{action},\ \term{int})\quad\\
-             &|\qquad \term{DoU}(\nonterm{action},\
-                                     \nonterm{cond},\ \term{int})\\
-             &|\qquad \term{Cond}(\nonterm{cond},\ \term{int},\ \term{int})\\
-             &|\qquad \term{GoTo}(\term{int})\\
-             &|\qquad \term{End}
-\end{align*}
+\begin{alignat*}{4}
+  \sort{Program}\quad
+    &\nterm{p}\quad & &::=\quad &
+      &\syn{P(}\nterm{vs}, \nterm{n}\syn{)}\qquad & &\text{programs}\\
+  \sort{Vertices}\quad
+    &\nterm{vs}\quad & &::=\quad &
+      &\syn{S(}\nterm{v}\syn{)}\qquad & &\text{singleton}\\
+  &&&&&\nterm{v}\syn{::}\nterm{vs}\qquad & &\text{cons}\\
+  \sort{Vertex}\quad
+    &\nterm{v}\quad & &::=\quad &
+      &\syn{V(}\nterm{n}, \nterm{c}\syn{)}\qquad & &\text{vertex}\\
+  \sort{Content}\quad
+    &\nterm{c}\quad & &::=\quad &
+      &\syn{do }\nterm{a}\syn{ then }\nterm{n}\qquad & &\text{single action}\\
+  &&&&&\syn{do }\nterm{a}\syn{ until }\nterm{cnd}\syn{ then }\nterm{n}\qquad
+                                                     & &\text{open loop action}\\
+  &&&&&\syn{if }\nterm{cnd}\syn{ then }\nterm{n}\syn{ else }\nterm{n}\qquad
+                                                     & &\text{conditional}\\
+  &&&&&\syn{goto }\nterm{n}\qquad & &\text{goto}\\
+  &&&&&\syn{end}\qquad & &\text{termination}
+  % \nonterm{program}\quad ::&=\quad \term{P}(\nonterm{vertices},\ \term{n}) &
+  % \nonterm{vertices}\quad ::&=\quad \term{S}(\nonterm{vertex})\quad
+  %                            |\quad \term{Cons}(\nonterm{vertex},\
+  %                                               \nonterm{vertices})\\
+  % \nonterm{vertex}\quad ::&=\quad \term{V}(\term{n},\ \nonterm{content})\\
+  % \nonterm{content}\quad ::&=\quad
+  %                     \term{Do}(\nonterm{action},\ \term{n})\quad\\
+  %            &|\qquad \term{DoU}(\nonterm{action},\
+  %                                    \nonterm{cond},\ \term{n})\\
+  %            &|\qquad \term{Cond}(\nonterm{cond},\ \term{n},\ \term{n})\\
+  %            &|\qquad \term{GoTo}(\term{n})\\
+  %            &|\qquad \term{End}
+\end{alignat*}
 
-An \term{int} is any integer.\\
+We let $\nterm{n} \in \mathbb{Z}$, the integers.\\
 
-An $\nonterm{action}$ represents the kinds of actions (like movement) a specific
-robot may be able to perform. We assume a grammar defining $\nonterm{action}$
-exists.\\
+We let \nterm{a} $\in$ $\sort{Actions}$, a sort describing classes of actions,
+like movement, that a robot might be able to perform. A grammar defining
+$\sort{Actions}$ is assumed.\\
 
-A $\nonterm{cond}$ represents the kinds of conditions (like whether an object is
-some distance ahead) a specific robot may be able to sense. We assume a grammar
-defining $\nonterm{cond}$ exists.\\
+We let \nterm{cnd} $\in$ $\sort{Conditions}$, a sort describing classes of
+conditions, like whether an object is some distance ahead, that a robot might be
+able to detect. A grammar defining $\sort{Conditions}$ is assumed.\\
 
 \end{document}
