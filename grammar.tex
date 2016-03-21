@@ -7,10 +7,21 @@
 \author{Andrew Benson}
 \date{}
 
+% Frequently used commands
 \newcommand{\sort}[1]{\mathtt{#1}}
 \newcommand{\syn}[1]{\textbf{#1}}
 \newcommand{\nterm}[1]{\textit{#1}}
 
+% Frequently used syntax
+\newcommand{\prog}[2]{\syn{P(}\nterm{#1}, \nterm{#2}\syn{)}}
+\newcommand{\sing}[1]{\syn{S(}\nterm{#1}\syn{)}}
+\newcommand{\cons}[2]{\nterm{#1}\syn{::}\nterm{#2}}
+\newcommand{\ver}[2]{\syn{V(}\nterm{#1}, \nterm{#2}\syn{)}}
+\newcommand{\doonce}[2]{\syn{do }\nterm{#1}\syn{ then }\nterm{#2}}
+\newcommand{\dountil}[3]{\syn{do }\nterm{#1}\syn{ until }\nterm{#2}\syn{ then }\nterm{#3}}
+\newcommand{\ifelse}[3]{\syn{if }\nterm{#1}\syn{ then }\nterm{#2}\syn{ else }\nterm{#3}}
+\newcommand{\goto}[1]{\syn{goto }\nterm{#1}}
+\newcommand{\progend}[0]{\syn{end}}
 
 \begin{document}
 \maketitle
@@ -18,23 +29,21 @@
 \begin{alignat*}{4}
   \sort{Program}\quad
     &\nterm{p}\quad & &::=\quad &
-      &\syn{P(}\nterm{vs}, \nterm{n}\syn{)}\qquad & &\text{programs}\\
+      &\prog{vs}{n}\qquad & &\text{programs}\\
   \sort{Vertices}\quad
     &\nterm{vs}\quad & &::=\quad &
-      &\syn{S(}\nterm{v}\syn{)}\qquad & &\text{singleton}\\
-  &&&&&\nterm{v}\syn{::}\nterm{vs}\qquad & &\text{cons}\\
+      &\sing{v}\qquad & &\text{singleton}\\
+  &&&&&\cons{v}{vs}\qquad & &\text{cons}\\
   \sort{Vertex}\quad
     &\nterm{v}\quad & &::=\quad &
-      &\syn{V(}\nterm{n}, \nterm{c}\syn{)}\qquad & &\text{vertex}\\
+      &\ver{n}{c}\qquad & &\text{vertex}\\
   \sort{Content}\quad
     &\nterm{c}\quad & &::=\quad &
-      &\syn{do }\nterm{a}\syn{ then }\nterm{n}\qquad & &\text{single action}\\
-  &&&&&\syn{do }\nterm{a}\syn{ until }\nterm{cnd}\syn{ then }\nterm{n}\qquad
-                                                     & &\text{open loop action}\\
-  &&&&&\syn{if }\nterm{cnd}\syn{ then }\nterm{n}\syn{ else }\nterm{n}\qquad
-                                                     & &\text{conditional}\\
-  &&&&&\syn{goto }\nterm{n}\qquad & &\text{goto}\\
-  &&&&&\syn{end}\qquad & &\text{termination}
+      &\doonce{a}{n}\qquad & &\text{single action}\\
+  &&&&&\dountil{a}{cnd}{n}\qquad & &\text{open loop action}\\
+  &&&&&\ifelse{cnd}{n}{n}\qquad & & \text{conditional}\\
+  &&&&&\goto{n}\qquad & &\text{goto}\\
+  &&&&&\progend\qquad & &\text{termination}
 \end{alignat*}
 
 We let $\nterm{n} \in \mathbb{Z}$, the integers.\\
