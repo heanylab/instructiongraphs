@@ -2,6 +2,7 @@
 
 \usepackage{mathpartir}
 \usepackage{amsmath}
+\usepackage{amssymb}
 
 \title{Instruction Graph Statics}
 \author{Andrew Benson}
@@ -35,6 +36,8 @@
 
 \section{Validity}
 
+$\valid{\nterm{p}}$ means that the Program $\nterm{p}$ is a valid program.
+
 \begin{mathpar}
   \inferrule{
     \defined{\nterm{vs}}{\nterm{U}}\\
@@ -45,6 +48,11 @@
 \end{mathpar}
 
 \section{Defined}
+
+We let $\nterm{U} \subseteq \mathbb{Z}$ be a subset of the integers.\\
+
+$\defined{\nterm{vs}}{\nterm{U}}$ means that the Vertices $\nterm{vs}$ define
+exactly the set $\nterm{U}$ of vertex indices.
 
 \begin{mathpar}
   \inferrule{
@@ -65,6 +73,13 @@
 \end{mathpar}
 
 \section{Connected}
+
+We let $\nterm{U} \subseteq \mathbb{Z}$ be a subset of the integers.\\
+
+$\connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U}}$ means that the
+vertex represented by $\nterm{n}$ is connected to each vertex represented by an
+index in $\nterm{U}$ of the vertices in $\nterm{vs}$, where $\nterm{U_v}$ is the
+set of vertex indices of vertices already visited.
 
 \begin{mathpar}
   \inferrule{
