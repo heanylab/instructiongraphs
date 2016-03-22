@@ -10,13 +10,13 @@
 % Frequently used commands
 \newcommand{\sort}[1]{\mathtt{#1}}
 \newcommand{\syn}[1]{\textbf{#1}}
-\newcommand{\nterm}[1]{\textit{#1}}
+\newcommand{\nterm}[1]{\mathit{#1}}
 
 % Frequently used syntax
-\newcommand{\prog}[2]{\syn{P(}#1, #2\syn{)}}
+\newcommand{\prog}[2]{\syn{P(}#1,\ #2\syn{)}}
 \newcommand{\sing}[1]{\syn{S(}#1\syn{)}}
-\newcommand{\cons}[2]{#1\syn{::}#2}
-\newcommand{\ver}[2]{\syn{V(}#1, #2\syn{)}}
+\newcommand{\cons}[2]{#1\ \syn{::}\ #2}
+\newcommand{\ver}[2]{\syn{V(}#1,\ #2\syn{)}}
 \newcommand{\doonce}[2]{\syn{do }#1\syn{ then }#2}
 \newcommand{\dountil}[3]{\syn{do }#1\syn{ until }#2\syn{ then }#3}
 \newcommand{\ifelse}[3]{\syn{if }#1\syn{ then }#2\syn{ else }#3}
@@ -48,11 +48,11 @@
 
 We let $\nterm{n} \in \mathbb{Z}$, the integers.\\
 
-We let \nterm{a} $\in$ $\sort{Actions}$, a sort describing classes of actions,
+We let $\nterm{a} \in \sort{Actions}$, a sort describing classes of actions,
 like movement, that a robot might be able to perform. A grammar defining
 $\sort{Actions}$ is assumed.\\
 
-We let \nterm{cnd} $\in$ $\sort{Conditions}$, a sort describing classes of
+We let $\nterm{cnd} \in \sort{Conditions}$, a sort describing classes of
 conditions, like whether an object is some distance ahead, that a robot might be
 able to detect. A grammar defining $\sort{Conditions}$ is assumed.\\
 
