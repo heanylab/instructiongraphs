@@ -10,32 +10,37 @@
 \begin{document}
 \maketitle
 
-% Define commands for common syntax and judgments
-\newcommand{\nonterm}[1]{\langle\text{#1}\rangle}
-\newcommand{\term}[1]{\textbf{#1}}
+% Frequently used commands
+\newcommand{\sort}[1]{\mathtt{#1}}
+\newcommand{\syn}[1]{\textbf{#1}}
+\newcommand{\nterm}[1]{\mathit{#1}}
 
-\newcommand{\valid}[1]{\mathtt{#1}\ \textit{valid}}
-\newcommand{\defined}[2]{\mathtt{(#1,\ #2)}\ \textit{defined}}
-\newcommand{\match}[3]{\mathtt{(#1,\ #2,\ #3)}\ \textit{match}}
-\newcommand{\connected}[4]{\mathtt{(#1,\ #2,\ #3,\ #4)}\ \textit{connected}}
+% Frequently used syntax
+\newcommand{\prog}[2]{\syn{P(}#1,\ #2\syn{)}}
+\newcommand{\sing}[1]{\syn{S(}#1\syn{)}}
+\newcommand{\cons}[2]{#1\ \syn{::}\ #2}
+\newcommand{\ver}[2]{\syn{V(}#1,\ #2\syn{)}}
+\newcommand{\doonce}[2]{\syn{do }#1\syn{ then }#2}
+\newcommand{\dountil}[3]{\syn{do }#1\syn{ until }#2\syn{ then }#3}
+\newcommand{\ifelse}[3]{\syn{if }#1\syn{ then }#2\syn{ else }#3}
+\newcommand{\goto}[1]{\syn{goto }#1}
+\newcommand{\progend}[0]{\syn{end}}
 
-\newcommand{\singletonset}[1]{\{\mathtt{#1}\}}
-\newcommand{\mem}[2]{\mathtt{#1 \in #2}}
-\newcommand{\notmem}[2]{\mathtt{#1 \notin #2}}
+\newcommand{\singletonset}[1]{\{#1\}}
+
+% Frequently used judgments
+\newcommand{\valid}[1]{#1\ \mathtt{valid}}
+\newcommand{\defined}[2]{(#1,\ #2)\ \mathtt{defined}}
+\newcommand{\connected}[4]{(#1,\ #2,\ #3,\ #4)\ \mathtt{connected}}
 
 \section{Validity}
 
 \begin{mathpar}
   \inferrule{
+    \defined{\nterm{vs}}{\nterm{U}}\\
+    \connected{\nterm{vs}}{\nterm{\emptyset}}{\nterm{s}}{\nterm{U}}
   }{
-    \valid{\emptyset}
-  }
-
-  \inferrule{
-    \defined{vs}{U}\\
-    \connected{vs}{\emptyset}{s}{U}
-  }{
-    \valid{\term{P}(vs, s)}
+    \valid{\prog{\nterm{vs}}{\nterm{s}}}
   }
 \end{mathpar}
 
@@ -44,34 +49,18 @@
 \begin{mathpar}
   \inferrule{
   }{
-    \defined{\term{S}(\term{V}(n, cont))}{\singletonset{n}}
+    \defined{\sing{\ver{\nterm{n}}{\nterm{c}}}}{\singletonset{n}}
   }
 
   \inferrule{
-    \defined{vs}{U}\\
-    \notmem{n}{U}
+    \defined{\nterm{vs}}{\nterm{U}}\\
+    \nterm{n} \notin \nterm{U}
   }{
-    \defined{\term{Cons}(\term{V}(n, cont), vs)}{U \cup \singletonset{n}}
-  }
-\end{mathpar}
-
-\section{Match}
-
-\begin{mathpar}
-  \inferrule{
-  }{
-    \match{\term{S}(\term{V}(n, cont))}{n}{\term{V}(n, cont)}
-  }
-
-  \inferrule{
-    \match{vs}{n}{\term{V}(n, cont)}
-  }{
-    \match{\term{Cons}(v, vs)}{n}{\term{V}(n, cont)}
-  }
-
-  \inferrule{
-  }{
-    \match{\term{Cons}(\term{V}(n, cont), vs)}{n}{\term{V}(n, cont)}
+    \defined{
+      \cons{\ver{\nterm{n}}{\nterm{c}}}{\nterm{vs}}
+    }{
+      \nterm{U} \cup \singletonset{\nterm{n}}
+    }
   }
 \end{mathpar}
 
@@ -79,49 +68,49 @@
 
 \begin{mathpar}
   \inferrule{
-    \mem{n}{U_v}
+    \nterm{n} \in \nterm{U_v}
   }{
-    \connected{vs}{U_v}{n}{\emptyset}
+    \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{\emptyset}}
   }
 
   \inferrule{
-    \match{vs}{n}{\term{V}(n, \term{End})}\\
-    \notmem{n}{U_v}
+    \ver{\nterm{n}}{\progend} \in \nterm{vs}\\
+    \nterm{n} \notin \nterm{U_v}
   }{
-    \connected{vs}{U_v}{n}{\singletonset{n}}
+    \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\singletonset{\nterm{n}}}
   }
 
   \inferrule{
-    \match{vs}{n}{\term{V}(n, \term{Do}(act, n'))}\\
+    \ver{\nterm{n}}{\doonce{\nterm{a}}{\nterm{n'}}} \in \nterm{vs}\\
     \connected{vs}{U_v \cup \singletonset{n}}{n'}{U}\\
-    \notmem{n}{U_v}
+    \nterm{n} \notin \nterm{U_v}
   }{
-    \connected{vs}{U_v}{n}{U \cup \singletonset{n}}
+    \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \singletonset{\nterm{n}}}
   }
 
   \inferrule{
-    \match{vs}{n}{\term{V}(n, \term{DoU}(act, cond, n'))}\\
+    \ver{\nterm{n}}{\dountil{\nterm{a}}{\nterm{cnd}}{\nterm{n'}}} \in \nterm{vs}\\
     \connected{vs}{U_v \cup \singletonset{n}}{n'}{U}\\
-    \notmem{n}{U_v}
+    \nterm{n} \notin \nterm{U_v}
   }{
-    \connected{vs}{U_v}{n}{U \cup \singletonset{n}}
+    \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \singletonset{\nterm{n}}}
   }
 
   \inferrule{
-    \match{vs}{n}{\term{V}(n, \term{Cond}(cond, n', n''))}\\
+    \ver{\nterm{n}}{\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}} \in \nterm{vs}\\
     \connected{vs}{U_v \cup \singletonset{n}}{n'}{U}\\
     \connected{vs}{U_v \cup U \cup \singletonset{n}}{n''}{U'}\\
-    \notmem{n}{U_v}
+    \nterm{n} \notin \nterm{U_v}
   }{
-    \connected{vs}{U_v}{n}{U \cup U' \cup \singletonset{n}}
+    \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \singletonset{\nterm{n}}}
   }
 
   \inferrule{
-    \match{vs}{n}{\term{V}(n, \term{GoTo}(n'))}\\
+    \ver{\nterm{n}}{\goto{\nterm{n'}}} \in \nterm{vs}\\
     \connected{vs}{U_v \cup \singletonset{n}}{n'}{U}\\
-    \notmem{n}{U_v}
+    \nterm{n} \notin \nterm{U_v}
   }{
-    \connected{vs}{U_v}{n}{U \cup \singletonset{n}}
+    \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \singletonset{\nterm{n}}}
   }
 \end{mathpar}
 
