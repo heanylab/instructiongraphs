@@ -34,6 +34,15 @@
 
 \section{Terminated}
 
+We let $\nterm{I}$ be a $bool$ list, representing the input used to satisfy a
+Condition $\nterm{cnd}$, and we let $\nterm{O}$ be an $\nterm{a}$ list,
+representing the ordered (but reversed) list of actions that are executed.\\
+
+$\terminated{\cfg{\nterm{n}}{\nterm{vs}}{\nterm{I}}{\nterm{O}}}$ means that the
+state with vertex represented by $\nterm{n}$ in vertices $\nterm{vs}$ with
+remaining input $\nterm{I}$ and current output $\nterm{O}$ is in a finished
+state for the program execution context.
+
 \begin{mathpar}
   \inferrule{
     \ver{\nterm{n}}{\progend} \in \nterm{vs}
@@ -43,6 +52,15 @@
 \end{mathpar}
 
 \section{Stuck}
+
+We let $\nterm{I}$ be a $bool$ list, representing the input used to satisfy a
+Condition $\nterm{cnd}$, and we let $\nterm{O}$ be an $\nterm{a}$ list,
+representing the ordered (but reversed) list of actions that are executed.\\
+
+$\stuck{\cfg{\nterm{n}}{\nterm{vs}}{\nterm{I}}{\nterm{O}}}$ means that the
+state with vertex represented by $\nterm{n}$ in vertices $\nterm{vs}$ with
+remaining input $\nterm{I}$ and current output $\nterm{O}$ cannot proceed, as it
+requires more input to continue.
 
 \begin{mathpar}
   \inferrule{
@@ -59,6 +77,19 @@
 \end{mathpar}
 
 \section{Steps}
+
+We let $\nterm{I}$ be a $bool$ list, representing the input used to satisfy a
+Condition $\nterm{cnd}$, and we let $\nterm{O}$ be an $\nterm{a}$ list,
+representing the ordered (but reversed) list of actions that are executed.\\
+
+$\steps{
+  \cfg{\nterm{n}}{\nterm{vs}}{\nterm{I}}{\nterm{O}}
+}{
+  \cfg{\nterm{n'}}{\nterm{vs}}{\nterm{I'}}{\nterm{O'}}
+}$ means that the state with vertex represented by $\nterm{n}$ in vertices
+$\nterm{vs}$ with remaining input $\nterm{I}$ and current output $\nterm{O}$
+continues to the state with vertex represented by $\nterm{n'}$ in vertices
+$\nterm{vs}$ with remaining input $\nterm{I'}$ and current output $\nterm{O'}$.
 
 \begin{mathpar}
   \inferrule{
