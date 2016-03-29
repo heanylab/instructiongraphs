@@ -18,7 +18,6 @@
 
 % Frequently used syntax
 \newcommand{\prog}[2]{\syn{P(}#1,\ #2\syn{)}}
-\newcommand{\sing}[1]{\syn{S(}#1\syn{)}}
 \newcommand{\cons}[2]{#1\ \syn{::}\ #2}
 \newcommand{\ver}[2]{\syn{V(}#1,\ #2\syn{)}}
 \newcommand{\doonce}[2]{\syn{do }#1\syn{ then }#2}
@@ -40,10 +39,16 @@ $\valid{\nterm{p}}$ means that the Program $\nterm{p}$ is a valid program.
 
 \begin{mathpar}
   \inferrule{
-    \defined{\nterm{vs}}{\nterm{U}}\\
-    \connected{\nterm{vs}}{\nterm{\emptyset}}{\nterm{s}}{\nterm{U}}
+    \defined{\nterm{\cons{\ver{\nterm{s}}{\nterm{c}}}{vs}}}{\nterm{U}}\\
+    \connected{
+      \nterm{\cons{\ver{\nterm{s}}{\nterm{c}}}{vs}}
+    }{
+      \nterm{\emptyset}
+    }{\nterm{s}
+    }{\nterm{U}
+    }
   }{
-    \valid{\prog{\nterm{vs}}{\nterm{s}}}
+    \valid{\prog{\nterm{\ver{\nterm{s}}{\nterm{c}}}}{\nterm{vs}}}
   }
 \end{mathpar}
 
@@ -57,7 +62,7 @@ exactly the set $\nterm{U}$ of vertex indices.
 \begin{mathpar}
   \inferrule{
   }{
-    \defined{\sing{\ver{\nterm{n}}{\nterm{c}}}}{\singletonset{n}}
+    \defined{\nterm{nil}}{\{\ \}}\\
   }
 
   \inferrule{
