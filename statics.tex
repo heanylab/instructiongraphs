@@ -3,6 +3,15 @@
 \usepackage{mathpartir}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{fancyhdr}
+
+\fancypagestyle{simple}
+{
+  \fancyhf{}
+  \cfoot{Statics Page \thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+\pagestyle{simple}
 
 \title{Instruction Graph Statics}
 \author{Andrew Benson}
@@ -32,6 +41,8 @@
 \newcommand{\valid}[1]{#1\ \mathtt{valid}}
 \newcommand{\defined}[2]{(#1,\ #2)\ \mathtt{defined}}
 \newcommand{\connected}[4]{(#1,\ #2,\ #3,\ #4)\ \mathtt{connected}}
+
+\thispagestyle{simple}
 
 \section{Validity}
 
