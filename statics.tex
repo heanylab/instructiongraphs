@@ -78,12 +78,16 @@ set of vertex indices of vertices already visited.
 
 \begin{mathpar}
   \inferrule{
+    \defined{\nterm{vs}}{\nterm{U}}\\
+    \nterm{U_v} \subseteq \nterm{U}\\
     \nterm{n} \in \nterm{U_v}
   }{
     \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{\emptyset}}
   }
 
   \inferrule{
+    \defined{\nterm{vs}}{\nterm{U}}\\
+    \nterm{U_v} \subseteq \nterm{U}\\
     \ver{\nterm{n}}{\progend} \in \nterm{vs}\\
     \nterm{n} \notin \nterm{U_v}
   }{
@@ -112,7 +116,7 @@ set of vertex indices of vertices already visited.
     \connected{vs}{U_v \cup U \cup \singletonset{n}}{n''}{U'}\\
     \nterm{n} \notin \nterm{U_v}
   }{
-    \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U'} \cup \singletonset{\nterm{n}}}
+    \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \nterm{U'} \cup \singletonset{\nterm{n}}}
   }
 
   \inferrule{
