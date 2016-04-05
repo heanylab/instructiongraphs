@@ -1,0 +1,248 @@
+\documentclass[12pt]{article}
+
+\usepackage{mathpartir}
+\usepackage{fancyhdr}
+\usepackage{ig}
+
+\fancypagestyle{simple}
+{
+  \fancyhf{}
+  \cfoot{Proofs Page \thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+\pagestyle{simple}
+
+\title{Instruction Graph Proofs}
+\author{Andrew Benson}
+\date{}
+
+\begin{document}
+\maketitle
+
+\thispagestyle{simple}
+
+\section{Progress}
+
+If $\cfgvalid{\nterm{cfg}}$, then either
+\begin{enumerate}
+  \item $\terminated{\nterm{cfg}}$
+  \item $\waiting{\nterm{cfg}}$
+  \item $\exists\ \nterm{cfg'}\ \texttt{s.t.} \steps{\nterm{cfg}}{\nterm{cfg'}}$
+\end{enumerate}
+
+\subsection{Proof}
+
+We proceed by induction on the judgment $\cfgvalid{\nterm{cfg}}$. There is only
+one rule that concludes $\cfgvalid{\nterm{cfg}}$:
+
+\begin{mathpar}
+  \inferrule{
+    \valid{\prog{\nterm{v}}{\nterm{vs}}}\\
+    \ver{\nterm{n}}{\nterm{c}} \in \nterm{\cons{\nterm{v}}{\nterm{vs}}}\\
+  }{
+    \cfgvalid{\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}}
+  }
+\end{mathpar}
+
+So we know $\nterm{cfg}$ is of the form
+$\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}$ and
+$\ver{\nterm{n}}{\nterm{c}} \in \nterm{vs}$. We continue by structural
+induction on $\nterm{c}$, which is of the sort $\sort{Content}$.\\
+
+Case $\nterm{c}$ is $\doonce{\nterm{a}}{\nterm{n'}}$:\\
+
+Then by the rule
+
+\begin{mathpar}
+  \inferrule{
+    \ver{\nterm{n}}{\doonce{\nterm{a}}{\nterm{n'}}} \in \nterm{vs}
+  }{
+    \steps{
+      \cfg{\nterm{n}}{\nterm{vs}}{\nterm{I}}{\nterm{O}}
+    }{
+      \cfg{\nterm{n'}}{\nterm{vs}}{\nterm{I}}{\cons{\nterm{a}}{\nterm{O}}}
+    }
+  }
+\end{mathpar}
+
+we can conclude
+$\steps{
+   \cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}
+ }{
+   \cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\cons{\nterm{a}}{\nterm{O}}}
+ }$.
+
+Case $\nterm{c}$ is $\dountil{\nterm{a}}{\nterm{cnd}}{\nterm{n'}}$:\\
+
+We use structural induction on I.\\
+
+Inner case $\nterm{I}$ is $[\ ]$:\\
+
+Then by the rule
+
+\begin{mathpar}
+  \inferrule{
+    \ver{\nterm{n}}{\dountil{\nterm{a}}{\nterm{cnd}}{\nterm{n'}}} \in \nterm{vs}
+  }{
+    \waiting{\cfg{\nterm{n}}{\nterm{vs}}{\nterm{[\ ]}}{\nterm{O}}}
+  }
+\end{mathpar}
+
+we can conclude
+$\waiting{\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}}$.\\
+
+Inner case $\nterm{I}$ is $\cons{\nterm{true}}{\nterm{I'}}$:\\
+
+Then by the rule
+
+\begin{mathpar}
+  \inferrule{
+    \ver{\nterm{n}}{\dountil{\nterm{a}}{\nterm{cnd}}{\nterm{n'}}} \in \nterm{vs}
+  }{
+    \steps{
+      \cfg{\nterm{n}}{\nterm{vs}}{\cons{\nterm{true}}{\nterm{I}}}{\nterm{O}}
+    }{
+      \cfg{\nterm{n'}}{\nterm{vs}}{\nterm{I}}{\cons{\nterm{a}}{\nterm{O}}}
+    }
+  }
+\end{mathpar}
+
+we can conclude
+$\steps{
+   \cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}
+ }{
+   \cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\cons{\nterm{a}}{\nterm{O}}}
+ }$.\\
+
+Inner case $\nterm{I}$ is $\cons{\nterm{false}}{\nterm{I'}}$:\\
+
+Then by the rule
+
+\begin{mathpar}
+  \inferrule{
+    \ver{\nterm{n}}{\dountil{\nterm{a}}{\nterm{cnd}}{\nterm{n'}}} \in \nterm{vs}
+  }{
+    \steps{
+      \cfg{\nterm{n}}{\nterm{vs}}{\cons{\nterm{false}}{\nterm{I}}}{\nterm{O}}
+    }{
+      \cfg{\nterm{n}}{\nterm{vs}}{\nterm{I}}{\cons{\nterm{a}}{\nterm{O}}}
+    }
+  }
+\end{mathpar}
+
+we can conclude
+$\steps{
+   \cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}
+ }{
+   \cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\cons{\nterm{a}}{\nterm{O}}}
+ }$.\\
+
+Case $\nterm{c}$ is $\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}$:\\
+
+We use structural induction on I.\\
+
+Inner case $\nterm{I}$ is $[\ ]$:\\
+
+Then by the rule
+
+\begin{mathpar}
+  \inferrule{
+    \ver{\nterm{n}}{\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}} \in \nterm{vs}
+  }{
+    \waiting{\cfg{\nterm{n}}{\nterm{vs}}{\nterm{[\ ]}}{\nterm{O}}}
+  }
+\end{mathpar}
+
+we can conclude
+$\waiting{\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}}$.\\
+
+Inner case $\nterm{I}$ is $\cons{\nterm{true}}{\nterm{I'}}$:\\
+
+Then by the rule
+
+\begin{mathpar}
+  \inferrule{
+    \ver{\nterm{n}}{\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}} \in \nterm{vs}
+  }{
+    \steps{
+      \cfg{\nterm{n}}{\nterm{vs}}{\cons{\nterm{true}}{\nterm{I}}}{\nterm{O}}
+    }{
+      \cfg{\nterm{n'}}{\nterm{vs}}{\nterm{I}}{\nterm{O}}
+    }
+  }
+\end{mathpar}
+
+we can conclude
+$\steps{
+   \cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}
+ }{
+   \cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\nterm{O}}
+ }$.\\
+
+Inner case $\nterm{I}$ is $\cons{\nterm{false}}{\nterm{I'}}$:\\
+
+Then by the rule
+
+\begin{mathpar}
+  \inferrule{
+    \ver{\nterm{n}}{\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}} \in \nterm{vs}
+  }{
+    \steps{
+      \cfg{\nterm{n}}{\nterm{vs}}{\cons{\nterm{false}}{\nterm{I}}}{\nterm{O}}
+    }{
+      \cfg{\nterm{n''}}{\nterm{vs}}{\nterm{I}}{\nterm{O}}
+    }
+  }
+\end{mathpar}
+
+we can conclude
+$\steps{
+   \cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}
+ }{
+   \cfg{\nterm{n''}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\nterm{O}}
+ }$.\\
+
+Case $\nterm{c}$ is $\goto{\nterm{n'}}$:\\
+
+Then by the rule
+
+\begin{mathpar}
+  \inferrule{
+    \ver{\nterm{n}}{\goto{\nterm{n'}}} \in \nterm{vs}
+  }{
+    \steps{
+      \cfg{\nterm{n}}{\nterm{vs}}{\nterm{I}}{\nterm{O}}
+    }{
+      \cfg{\nterm{n'}}{\nterm{vs}}{\nterm{I}}{\nterm{O}}
+    }
+  }
+\end{mathpar}
+
+we can conclude
+$\steps{
+   \cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}
+ }{
+   \cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}
+ }$.\\
+
+Case $\nterm{c}$ is $\progend$:\\
+
+Then by the rule
+
+\begin{mathpar}
+  \inferrule{
+    \ver{\nterm{n}}{\progend} \in \nterm{vs}
+  }{
+    \terminated{\cfg{\nterm{n}}{\nterm{vs}}{\nterm{I}}{\nterm{O}}}
+  }
+\end{mathpar}
+
+we can conclude
+$\terminated{\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}}$.
+
+\section{Preservation}
+
+If $\cfgvalid{\nterm{cfg}}$ and $\steps{\nterm{cfg}}{\nterm{cfg'}}$ then
+$\cfgvalid{\nterm{cfg'}}$.
+
+\end{document}
