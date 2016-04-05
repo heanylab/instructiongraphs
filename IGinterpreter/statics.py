@@ -1,57 +1,86 @@
 # statics - takes an IG AST and does some static checks
 
-from parserIG import Node
+from constants import *
+from parserIG import Node, Program, Vertex, Content, Action, Condition
 
-def is_program(ast):
-  return type(ast) == Node \
-         and (ast.kind == "EmptyProgram" or ast.kind == "Program")
+# helper to find a vertex with the given index
+def findn(vs, n):
+  for v in vs:
+    assert(isinstance(v, Vertex))
+    (n2, c) = v.params
+    if n == n2:
+      return v
+  raise Exception("Error: Couldn't find vertex with index %d" %n)
 
-def find_vertices(ast):
-  if not is_program(ast):
-    print("Attempted to find vertices in a non-program AST!")
-    raise Exception("Statics Error")
-  vertex_map = dict()
-  def find_vertex_on_node(ast, vmap):
-    if type(ast) != Node:
-      return
-    if ast.kind == "Vertex":
-      vmap[ast.params[0]] = ast
-    list(map(lambda node: find_vertex_on_node(node, vmap), list(ast.params)))
-  find_vertex_on_node(ast, vertex_map)
-  return vertex_map
+# returns a set of defined vertices
+def defined(vlist):
+  if vlist == []: return set()
+  (v, vs) = vlist[0], vlist[1:]
+  assert(isinstance(v, Vertex))
+  (n, c) = v.params
+  U = defined(vs)
+  if n in U:
+    raise Exception("Error: Found multiple vertices with index %d" %n)
+  U.add(n)
+  return U
 
-def get_start_vertex(ast):
-  if not is_program(ast):
-    print("Attempted to get the start vertex of a non-program AST!")
-    raise Exception("Statics Error")
-  if ast.kind == "EmptyProgram":
-    return None
+# returns a set of connected vertices
+def connected(vs, Uv, n):
+  if n in Uv:
+    U = defined(vs)
+    if not Uv.issubset(U):
+      raise Exception("Error: Visited an undefined vertex...?")
+    return set()
+  v = findn(vs, n)
+  assert(isinstance(v, Vertex))
+  (n, c) = v.params
+  if c.operator == END:
+    U = defined(vs)
+    if not Uv.issubset(U):
+      raise Exception("Error: Visited an undefined vertex...?")
+    res = set()
+    res.add(n)
+    return res
+  elif c.operator == DOONCE:
+    (a, n2) = c.params
+    Uv.add(n)
+    U = connected(vs, Uv, n2)
+    U.add(n)
+    return U
+  elif c.operator == DOUNTIL:
+    (a, cnd, n2) = c.params
+    Uv.add(n)
+    U = connected(vs, Uv, n2)
+    U.add(n)
+    return U
+  elif c.operator == IFELSE:
+    (cnd, n2, n3) = c.params
+    Uv2 = Uv.copy()
+    Uv.add(n)
+    U = connected(vs, Uv, n2)
+    Uv2.add(n)
+    Uv2.update(U)
+    U2 = connected(vs, Uv2, n3)
+    U2.add(n)
+    U2.update(U)
+    return U2
+  elif c.operator == GOTO:
+    (n2,) = c.params
+    Uv.add(n)
+    U = connected(vs, Uv, n2)
+    U.add(n)
+    return U
   else:
-    (vdecls, startdecl) = ast.params
-    return startdecl.params[0]
+    raise Exception("Error: Unknown Vertex operator")
 
-def check_valid_start_vertex(ast, vmap):
-  if not is_program(ast):
-    print("Attempted to check validity of the start vertex of a non-program AST!")
-    raise Exception("Statics Error")
-  start_vertex = get_start_vertex(ast)
-  if start_vertex != None and start_vertex not in vmap:
-    print("Not a valid start vertex!")
-    raise Exception("Statics Error")
-
-def check_valid_next_vertices(ast, vmap):
-  if type(ast) != Node:
-    return
-  if ast.kind == "Next":
-    vertex_index = ast.params[0]
-    if vertex_index not in vmap:
-      print("Found Vertex referencing unknown vertex! Vertex index was %d"
-            %vertex_index)
-      raise Exception("Statics Error")
-  list(map(lambda node: check_valid_next_vertices(node, vmap),
-           list(ast.params)))
-
-def check_statics(ast):
-  vmap = find_vertices(ast)
-  check_valid_start_vertex(ast, vmap)
-  check_valid_next_vertices(ast, vmap)
+# checks validity. return true if valid, else raise Exception
+def valid(ast):
+  assert(isinstance(ast, Program))
+  (v, vs) = ast.params
+  assert(isinstance(v, Vertex))
+  (s, c) = v.params
+  U = defined([v]+vs)
+  U2 = connected([v]+vs, set(), s)
+  if U != U2:
+    raise Exception("Error: Defined vertices are not equal to connected vertices.")
+  return True

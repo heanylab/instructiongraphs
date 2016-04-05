@@ -2,23 +2,22 @@
 
 # the tokens in our IG language
 tokens = [
-  "LPAREN",
-  "RPAREN",
+  "LPAR",
+  "RPAR",
   "COMMA",
   "NUM",
   "STRING",
-  "EMPTYPROGRAM",
-  "PROGRAM",
-  "START",
-  "SINGLETON",
+  "P",
+  "NIL",
   "CONS",
-  "VERTEX",
+  "V",
   "DO",
-  "DOUNTIL",
-  "CONDITIONAL",
+  "THEN",
+  "UNTIL",
+  "IF",
+  "ELSE",
   "GOTO",
   "END",
-  "NEXT",
   "MOVE",
   "SAY",
   "VISIBLE",
@@ -26,27 +25,27 @@ tokens = [
 ]
 
 # simple tokens
-t_LPAREN =       r"\("
-t_RPAREN =       r"\)"
+t_LPAR =         r"\("
+t_RPAR =         r"\)"
 t_COMMA =        r","
-t_EMPTYPROGRAM = r"EmptyProgram"
-t_PROGRAM =      r"Program"
-t_START =        r"Start"
-t_SINGLETON =    r"Singleton"
-t_CONS =         r"Cons"
-t_VERTEX =       r"Vertex"
-t_DO =           r"Do"
-t_DOUNTIL =      r"DoUntil"
-t_CONDITIONAL =  r"Conditional"
-t_GOTO =         r"GoTo"
-t_END =          r"End"
-t_NEXT =         r"Next"
+t_P =            r"P"
+t_NIL =          r"nil"
+t_CONS =         r"::"
+t_V =            r"V"
+t_DO =           r"do"
+t_THEN =         r"then"
+t_UNTIL =        r"until"
+t_IF =           r"if"
+t_ELSE =         r"else"
+t_GOTO =         r"goto"
+t_END =          r"end"
 t_MOVE =         r"Move"
 t_SAY =          r"Say"
 t_VISIBLE =      r"Visible"
 t_STOP =         r"Stop"
 
 # more complex tokens
+
 def t_NUM(t):
   r"(-)?\d+(\.\d+)?"
   t.value = float(t.value)

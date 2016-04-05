@@ -6,7 +6,7 @@ import lexerIG
 import ply.yacc as yacc
 import parserIG
 import statics
-import interpreter
+import dynamics
 
 import sys
 
@@ -25,6 +25,6 @@ if __name__ == "__main__":
     print("Could not open file for reading!")
     exit(1)
   ast = parser.parse(igcode)
-  statics.check_statics(ast)
-  interpreter.execute(ast)
+  assert(statics.valid(ast))
+  dynamics.eval(ast)
   igfile.close()
