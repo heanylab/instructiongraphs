@@ -3,6 +3,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{fancyhdr}
+\usepackage{ig}
 
 \fancypagestyle{simple}
 {
@@ -15,21 +16,6 @@
 \title{Instruction Graph Grammar}
 \author{Andrew Benson}
 \date{}
-
-% Frequently used commands
-\newcommand{\sort}[1]{\mathtt{#1}}
-\newcommand{\syn}[1]{\textbf{#1}}
-\newcommand{\nterm}[1]{\mathit{#1}}
-
-% Frequently used syntax
-\newcommand{\prog}[2]{\syn{P(}#1,\ #2\syn{)}}
-\newcommand{\cons}[2]{#1\ \syn{::}\ #2}
-\newcommand{\ver}[2]{\syn{V(}#1,\ #2\syn{)}}
-\newcommand{\doonce}[2]{\syn{do }#1\syn{ then }#2}
-\newcommand{\dountil}[3]{\syn{do }#1\syn{ until }#2\syn{ then }#3}
-\newcommand{\ifelse}[3]{\syn{if }#1\syn{ then }#2\syn{ else }#3}
-\newcommand{\goto}[1]{\syn{goto }#1}
-\newcommand{\progend}[0]{\syn{end}}
 
 \begin{document}
 \maketitle

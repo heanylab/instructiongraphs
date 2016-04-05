@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{mathpartir}
 \usepackage{fancyhdr}
+\usepackage{ig}
 
 \fancypagestyle{simple}
 {
@@ -19,30 +20,6 @@
 
 \begin{document}
 \maketitle
-
-% Frequently used commands
-\newcommand{\sort}[1]{\mathtt{#1}}
-\newcommand{\syn}[1]{\textbf{#1}}
-\newcommand{\nterm}[1]{\mathit{#1}}
-
-% Frequently used syntax
-\newcommand{\prog}[2]{\syn{P(}#1,\ #2\syn{)}}
-\newcommand{\cons}[2]{#1\ \syn{::}\ #2}
-\newcommand{\ver}[2]{\syn{V(}#1,\ #2\syn{)}}
-\newcommand{\doonce}[2]{\syn{do }#1\syn{ then }#2}
-\newcommand{\dountil}[3]{\syn{do }#1\syn{ until }#2\syn{ then }#3}
-\newcommand{\ifelse}[3]{\syn{if }#1\syn{ then }#2\syn{ else }#3}
-\newcommand{\goto}[1]{\syn{goto }#1}
-\newcommand{\progend}[0]{\syn{end}}
-
-\newcommand{\cfg}[4]{\syn{(}#1,\ #2,\ #3,\ #4\syn{)}}
-
-% Frequently used judgments
-\newcommand{\valid}[1]{#1\ \mathtt{valid}}
-\newcommand{\terminated}[1]{#1\ \mathtt{terminated}}
-\newcommand{\waiting}[1]{#1\ \mathtt{waiting}}
-\newcommand{\steps}[2]{#1 \longmapsto #2}
-\newcommand{\cfgvalid}[1]{#1\ \mathtt{cfgvalid}}
 
 \thispagestyle{simple}
 \section{Configuration}
