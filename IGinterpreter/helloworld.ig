@@ -1,14 +1,1 @@
-Program(
-  Singleton(
-    Vertex(
-      1,
-      Do(
-        Say(
-          "Hello World!"
-        ),
-        End
-      )
-    )
-  ),
-  Start(1)
-)
+P(V(1, do Say("Hello world!") then 2), V(2, end)::nil)
