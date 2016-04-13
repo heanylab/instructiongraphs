@@ -44,10 +44,10 @@ If $\cfgvalid{\nterm{cfg}}$, then either
   \item $\exists\ \nterm{cfg'}\ \texttt{s.t.} \steps{\nterm{cfg}}{\nterm{cfg'}}$
 \end{enumerate}
 
-\subsection{Proof}
+\subsection{Proof of Progress}
 
-We proceed by induction on the judgment $\cfgvalid{\nterm{cfg}}$. There is only
-one rule that concludes $\cfgvalid{\nterm{cfg}}$:
+We proceed by case analysis on the judgment $\cfgvalid{\nterm{cfg}}$. There is
+only one rule that concludes $\cfgvalid{\nterm{cfg}}$:
 
 \begin{mathpar}
   \inferrule{
@@ -60,8 +60,8 @@ one rule that concludes $\cfgvalid{\nterm{cfg}}$:
 
 So we know $\nterm{cfg}$ is of the form
 $\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}$ and
-$\ver{\nterm{n}}{\nterm{c}} \in \nterm{vs}$. We continue by structural
-induction on $\nterm{c}$, which is of the sort $\sort{Content}$.\\
+$\ver{\nterm{n}}{\nterm{c}} \in \cons{\nterm{v}}{\nterm{vs}}$. We continue by
+  structural induction on $\nterm{c}$, which is of the sort $\sort{Content}$.\\
 
 Case $\nterm{c}$ is $\doonce{\nterm{a}}{\nterm{n'}}$:\\
 
@@ -84,7 +84,8 @@ $\steps{
    \cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}
  }{
    \cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\cons{\nterm{a}}{\nterm{O}}}
- }$.
+ }$.\\
+\\
 
 Case $\nterm{c}$ is $\dountil{\nterm{a}}{\nterm{cnd}}{\nterm{n'}}$:\\
 
@@ -150,6 +151,7 @@ $\steps{
  }{
    \cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\cons{\nterm{a}}{\nterm{O}}}
  }$.\\
+\\
 
 Case $\nterm{c}$ is $\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}$:\\
 
@@ -215,6 +217,7 @@ $\steps{
  }{
    \cfg{\nterm{n''}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\nterm{O}}
  }$.\\
+\\
 
 Case $\nterm{c}$ is $\goto{\nterm{n'}}$:\\
 
@@ -238,6 +241,7 @@ $\steps{
  }{
    \cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}
  }$.\\
+\\
 
 Case $\nterm{c}$ is $\progend$:\\
 
