@@ -21,6 +21,20 @@
 
 \thispagestyle{simple}
 
+\section{cfgvalid}
+
+$\cfgvalid{\nterm{cfg}}$ means that the configuration $\nterm{cfg}$ is a valid
+configuration.
+
+\begin{mathpar}
+  \inferrule{
+    \valid{\prog{\nterm{v}}{\nterm{vs}}}\\
+    \ver{\nterm{n}}{\nterm{c}} \in \nterm{\cons{\nterm{v}}{\nterm{vs}}}\\
+  }{
+    \cfgvalid{\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}}
+  }
+\end{mathpar}
+
 \section{Progress}
 
 If $\cfgvalid{\nterm{cfg}}$, then either
