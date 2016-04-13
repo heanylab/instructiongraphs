@@ -263,4 +263,646 @@ $\terminated{\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}
 If $\cfgvalid{\nterm{cfg}}$ and $\steps{\nterm{cfg}}{\nterm{cfg'}}$ then
 $\cfgvalid{\nterm{cfg'}}$.
 
+\subsection{Lemma 1}
+
+If $\connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U}}$ then $\forall n'
+\in U\ .\ \exists\ U_v',\ U'$ such that $U'$ is nonempty and
+$\connected{\nterm{vs}}{\nterm{U_v'}}{\nterm{n'}}{\nterm{U'}}$.\\
+
+Proof: We proceed by rule induction on
+$\connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U}}$.\\
+\\
+
+Case
+\inferrule{
+  \defined{\nterm{vs}}{\nterm{U}}\\
+  \nterm{U_v} \subseteq \nterm{U}\\
+  \nterm{n} \in \nterm{U_v}
+}{
+  \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{\emptyset}}
+}\\
+
+Then $U$ is the empty set so the lemma is vacuously true.\\
+\\
+
+Case
+\inferrule{
+  \defined{\nterm{vs}}{\nterm{U}}\\
+  \nterm{U_v} \subseteq \nterm{U}\\
+  \ver{\nterm{n}}{\progend} \in \nterm{vs}\\
+  \nterm{n} \notin \nterm{U_v}
+}{
+  \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\singletonset{\nterm{n}}}
+}\\
+
+Then $U$ contains exactly $\nterm{n}$. But we already have
+$\connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\singletonset{\nterm{n}}}$ so
+the lemma is satisfied.\\
+\\
+
+Case
+\inferrule{
+  \ver{\nterm{n}}{\doonce{\nterm{a}}{\nterm{n'}}} \in \nterm{vs}\\
+  \connected{vs}{U_v \cup \singletonset{n}}{n'}{U}\\
+  \nterm{n} \notin \nterm{U_v}
+}{
+  \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \singletonset{\nterm{n}}}
+}\\
+
+Then by the inductive hypothesis, since $\connected{vs}{U_v \cup
+  \singletonset{n}}{n'}{U}$ we know the lemma is satisfied for all
+$\nterm{n'} \in \nterm{U}$. All that's left is to show it is satisfied for
+$\nterm{n}$, but we have
+$\connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup
+  \singletonset{\nterm{n}}}$.\\
+\\
+
+Case
+\inferrule{
+  \ver{\nterm{n}}{\dountil{\nterm{a}}{\nterm{cnd}}{\nterm{n'}}} \in \nterm{vs}\\
+  \connected{vs}{U_v \cup \singletonset{n}}{n'}{U}\\
+  \nterm{n} \notin \nterm{U_v}
+}{
+  \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \singletonset{\nterm{n}}}
+}\\
+
+Identical to the case above.\\
+\\
+
+Case
+\inferrule{
+  \ver{\nterm{n}}{\goto{\nterm{n'}}} \in \nterm{vs}\\
+  \connected{vs}{U_v \cup \singletonset{n}}{n'}{U}\\
+  \nterm{n} \notin \nterm{U_v}
+}{
+  \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \singletonset{\nterm{n}}}
+}\\
+
+Identical to the case above.\\
+\\
+
+Case
+\inferrule{
+  \ver{\nterm{n}}{\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}} \in \nterm{vs}\\
+  \connected{vs}{U_v \cup \singletonset{n}}{n'}{U}\\
+  \connected{vs}{U_v \cup U \cup \singletonset{n}}{n''}{U'}\\
+  \nterm{n} \notin \nterm{U_v}
+}{
+  \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \nterm{U'} \cup \singletonset{\nterm{n}}}
+}\\
+
+Then by the inductive hypothesis, since $\connected{vs}{U_v \cup
+  \singletonset{n}}{n'}{U}$ and $\connected{vs}{U_v \cup U \cup
+  \singletonset{n}}{n''}{U'}$ we know the lemma is satisfied for all
+$\nterm{n'} \in \nterm{U} \cup \nterm{U'}$. All that's left is to show it is
+satisfied for $\nterm{n}$, but we have
+$\connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \nterm{U'} \cup
+  \singletonset{\nterm{n}}}$.\\
+\\
+
+\subsection{Lemma 2}
+
+If $\ver{\nterm{n}}{\nterm{c}} \in \nterm{vs}$ and
+$\defined{\nterm{vs}}{\nterm{U}}$ then $\nterm{n} \in \nterm{U}$.\\
+
+Proof: We proceed by rule induction on $\defined{\nterm{vs}}{\nterm{U}}$.\\
+\\
+
+Case
+\inferrule{
+}{
+  \defined{\nterm{nil}}{\{\ \}}\\
+}\\
+
+But $\nterm{vs}$ is $\nterm{nil}$, so the lemma is vacuously true.\\
+\\
+
+Case
+\inferrule{
+  \defined{\nterm{vs}}{\nterm{U}}\\
+  \nterm{n'} \notin \nterm{U}
+}{
+  \defined{
+    \cons{\ver{\nterm{n'}}{\nterm{c}}}{\nterm{vs}}
+  }{
+    \nterm{U} \cup \singletonset{\nterm{n'}}
+  }
+}\\
+($\nterm{n}$ is replaced by $\nterm{n'}$ in this statement of the rule to avoid
+ambiguity.)
+\\
+
+The vertex in question, $\ver{\nterm{n}}{\nterm{c}}$, is either
+$\ver{\nterm{n'}}{\nterm{c}}$ or $\in \nterm{vs}$. If it is the former, we are
+done since $\nterm{n'} \in \nterm{U} \cup \singletonset{\nterm{n'}}$. If it is
+the latter, then by the inductive hypothesis, since
+$\defined{\nterm{vs}}{\nterm{U}}$ we know $\nterm{n} \in \nterm{U}$ so
+$\nterm{n} \in \nterm{U} \cup \singletonset{\nterm{n'}}$.\\
+\\
+
+\subsection{Lemma 3}
+
+If $\defined{\nterm{vs}}{\nterm{U}}$ and $\nterm{n} \in \nterm{U}$ then
+$\ver{\nterm{n}}{\nterm{c}} \in \nterm{vs}$ for some $\nterm{c}$.\\
+
+Proof: We proceed by rule induction on $\defined{\nterm{vs}}{\nterm{U}}$.\\
+\\
+
+Case
+\inferrule{
+}{
+  \defined{\nterm{nil}}{\{\ \}}\\
+}\\
+
+But $\nterm{U}$ is empty so the lemma is vacuously true.\\
+\\
+
+Case
+\inferrule{
+  \defined{\nterm{vs}}{\nterm{U}}\\
+  \nterm{n'} \notin \nterm{U}
+}{
+  \defined{
+    \cons{\ver{\nterm{n'}}{\nterm{c}}}{\nterm{vs}}
+  }{
+    \nterm{U} \cup \singletonset{\nterm{n'}}
+  }
+}\\
+($\nterm{n}$ is replaced by $\nterm{n'}$ in this statement of the rule to avoid
+ambiguity.)
+\\
+
+$\nterm{n}$ is either $\in \nterm{U}$ or is $\nterm{n'}$. We know it's not both
+since $n' \notin \nterm{U}$. If it's the former, then by the inductive
+hypothesis, since $\defined{\nterm{vs}}{\nterm{U}}$, we know there is a
+$\ver{\nterm{n}}{\nterm{c}} \in \nterm{vs}$, which is also in
+$\cons{\ver{\nterm{n'}}{\nterm{c}}}{\nterm{vs}}$. If it's the latter, then
+clearly $\ver{\nterm{n'}}{\nterm{c}} \in
+\cons{\ver{\nterm{n'}}{\nterm{c}}}{\nterm{vs}}$.\\
+\\
+
+\subsection{Lemma 4}
+
+If $\defined{\nterm{vs}}{\nterm{U}}$ and $\ver{\nterm{n}}{\nterm{c}} \in
+\nterm{vs}$ and $\ver{\nterm{n}}{\nterm{c'}} \in \nterm{vs}$ then $\nterm{c} =
+\nterm{c'}$.\\
+
+Proof: We proceed by induction on $\defined{\nterm{vs}}{\nterm{U}}$.\\
+\\
+
+Case
+\inferrule{
+}{
+  \defined{\nterm{nil}}{\{\ \}}\\
+}\\
+
+But $\nterm{vs}$ is $\nterm{nil}$ so the lemma is vacuously true.\\
+\\
+
+Case
+\inferrule{
+  \defined{\nterm{vs}}{\nterm{U}}\\
+  \nterm{n'} \notin \nterm{U}
+}{
+  \defined{
+    \cons{\ver{\nterm{n'}}{\nterm{c}}}{\nterm{vs}}
+  }{
+    \nterm{U} \cup \singletonset{\nterm{n'}}
+  }
+}\\
+($\nterm{n}$ is replaced by $\nterm{n'}$ in this statement of the rule to avoid
+ambiguity.)
+\\
+
+Suppose that $\ver{\nterm{n}}{\nterm{c}}$ and $\ver{\nterm{n}}{\nterm{c'}}$ are
+both $\ver{\nterm{n'}}{\nterm{c}}$. Then clearly $\nterm{c} = \nterm{c'}$.\\
+
+Suppose instead that one of the two is $\ver{\nterm{n'}}{\nterm{c}}$ (so
+$\nterm{n} = \nterm{n'}$) and the other is $\in \nterm{vs}$. Then by Lemma 2,
+$\nterm{n} \in \nterm{U}$. But $\nterm{n'} \notin \nterm{U}$, contradiction.\\
+
+Suppose lastly that both are $\in \nterm{vs}$. Then by the inductive hypothesis,
+$\nterm{c} = \nterm{c'}$.\\
+\\
+
+\subsection{Lemma 5}
+
+If $\connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U}}$, then $\forall\
+n' \in U_v\ .\ \exists\ c'$ such that $\ver{\nterm{n'}}{\nterm{c'}} \in
+\nterm{vs}$.\\
+
+Proof: We proceed by rule induction on
+$\connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U}}$.\\
+\\
+
+Case
+\inferrule{
+  \defined{\nterm{vs}}{\nterm{U}}\\
+  \nterm{U_v} \subseteq \nterm{U}\\
+  \nterm{n} \in \nterm{U_v}
+}{
+  \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{\emptyset}}
+}\\
+
+Since $\nterm{U_v} \subseteq \nterm{U}$, it suffices to check this is true for
+every element in $\nterm{U}$. Since we have $\defined{\nterm{vs}}{\nterm{U}}$,
+we have this property by Lemma 3.\\
+\\
+
+Case
+\inferrule{
+  \defined{\nterm{vs}}{\nterm{U}}\\
+  \nterm{U_v} \subseteq \nterm{U}\\
+  \ver{\nterm{n}}{\progend} \in \nterm{vs}\\
+  \nterm{n} \notin \nterm{U_v}
+}{
+  \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\singletonset{\nterm{n}}}
+}\\
+
+Identical to the case above.\\
+\\
+
+Case
+\inferrule{
+  \ver{\nterm{n}}{\doonce{\nterm{a}}{\nterm{n'}}} \in \nterm{vs}\\
+  \connected{vs}{U_v \cup \singletonset{n}}{n'}{U}\\
+  \nterm{n} \notin \nterm{U_v}
+}{
+  \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \singletonset{\nterm{n}}}
+}\\
+
+Then by the inductive hypothesis, since $\connected{\nterm{vs}}{U_v \cup
+  \singletonset{n}}{n'}{U}$ we know the lemma is satisfied for all
+$\nterm{n'} \in \nterm{U_v \cup \singletonset{n}}$. Since $\nterm{U_v} \subseteq
+\nterm{U_v \cup \singletonset{n}}$, this is also true for all $\nterm{n'} \in
+\nterm{U_v}$.\\
+\\
+
+Case
+\inferrule{
+  \ver{\nterm{n}}{\dountil{\nterm{a}}{\nterm{cnd}}{\nterm{n'}}} \in \nterm{vs}\\
+  \connected{vs}{U_v \cup \singletonset{n}}{n'}{U}\\
+  \nterm{n} \notin \nterm{U_v}
+}{
+  \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \singletonset{\nterm{n}}}
+}\\
+
+Identical to the case above.\\
+\\
+
+Case
+\inferrule{
+  \ver{\nterm{n}}{\goto{\nterm{n'}}} \in \nterm{vs}\\
+  \connected{vs}{U_v \cup \singletonset{n}}{n'}{U}\\
+  \nterm{n} \notin \nterm{U_v}
+}{
+  \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \singletonset{\nterm{n}}}
+}\\
+
+Identical to the case above.\\
+\\
+
+Case
+\inferrule{
+  \ver{\nterm{n}}{\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}} \in \nterm{vs}\\
+  \connected{vs}{U_v \cup \singletonset{n}}{n'}{U}\\
+  \connected{vs}{U_v \cup U \cup \singletonset{n}}{n''}{U'}\\
+  \nterm{n} \notin \nterm{U_v}
+}{
+  \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \nterm{U'} \cup \singletonset{\nterm{n}}}
+}\\
+
+Identical to the case above.\\
+\\
+
+\subsection{Proof of Preservation}
+
+Recall that we stated preservation as ``If $\cfgvalid{\nterm{cfg}}$ and
+$\steps{\nterm{cfg}}{\nterm{cfg'}}$ then $\cfgvalid{\nterm{cfg'}}$.''\\
+
+We begin by case analyzing on $\cfgvalid{\nterm{cfg}}$ in order to conclude some
+important facts.\\
+
+The only case is
+\begin{mathpar}
+  \inferrule{
+    \valid{\prog{\nterm{v}}{\nterm{vs}}}\\
+    \ver{\nterm{n}}{\nterm{c}} \in \nterm{\cons{\nterm{v}}{\nterm{vs}}}\\
+  }{
+    \cfgvalid{\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}}
+  }
+\end{mathpar}
+
+so we can conclude:
+
+\begin{equation}
+  \nterm{cfg} =
+  \cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}
+\end{equation}
+
+\begin{equation}
+  \valid{\prog{\nterm{v}}{\nterm{vs}}}
+\end{equation}
+
+\begin{equation}
+  \ver{\nterm{n}}{\nterm{c}} \in \nterm{\cons{\nterm{v}}{\nterm{vs}}}
+\end{equation}
+\\
+
+We case analyze on $\valid{\prog{\nterm{v}}{\nterm{vs}}}$. The only case is
+
+\begin{mathpar}
+  \inferrule{
+    \defined{\nterm{\cons{\ver{\nterm{s}}{\nterm{c_s}}}{vs}}}{\nterm{U}}\\
+    \connected{
+      \nterm{\cons{\ver{\nterm{s}}{\nterm{c_s}}}{vs}}
+    }{
+      \nterm{\emptyset}
+    }{\nterm{s}
+    }{\nterm{U}
+    }
+  }{
+    \valid{\prog{\nterm{\ver{\nterm{s}}{\nterm{c_s}}}}{\nterm{vs}}}
+  }
+\end{mathpar}
+\\
+
+so we can conclude:
+
+\begin{equation}
+  \nterm{v} = \ver{\nterm{s}}{\nterm{c_s}}
+\end{equation}
+
+\begin{equation}
+  \defined{\nterm{\cons{\ver{\nterm{s}}{\nterm{c_s}}}{vs}}}{\nterm{U}}\\
+\end{equation}
+
+\begin{equation}
+    \connected{
+      \nterm{\cons{\ver{\nterm{s}}{\nterm{c_s}}}{vs}}
+    }{
+      \nterm{\emptyset}
+    }{\nterm{s}
+    }{\nterm{U}
+    }
+\end{equation}
+\\
+
+From (3), (4), and (5), using Lemma 2 we can conclude\\
+
+\begin{equation}
+  \nterm{n} \in \nterm{U}
+\end{equation}
+\\
+
+From (6) and (7), using Lemma 1 we can conclude $\exists\ \nterm{U_v'},\
+\nterm{U'}$ where $\nterm{U'}$ is not empty such that
+
+\begin{equation}
+  \connected{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{U_v'}}{\nterm{n}}{\nterm{U'}}
+\end{equation}
+\\
+
+We continue by case analyzing on $\steps{\nterm{cfg}}{\nterm{cfg'}}$.\\
+\\
+
+Case
+\inferrule{
+  \ver{\nterm{n}}{\doonce{\nterm{a}}{\nterm{n'}}} \in \nterm{vs'}
+}{
+  \steps{
+    \cfg{\nterm{n}}{\nterm{vs'}}{\nterm{I}}{\nterm{O}}
+  }{
+    \cfg{\nterm{n'}}{\nterm{vs'}}{\nterm{I}}{\cons{\nterm{a}}{\nterm{O}}}
+  }
+}\\
+
+So taking into account (1), $\nterm{cfg}$ is of the form
+$\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}$ and
+$\nterm{cfg'}$ is of the form
+$\cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\cons{\nterm{a}}{\nterm{O}}}$.
+We do another case analysis on (8).\\
+\\
+
+Inner case
+\inferrule{
+  \defined{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{U}}\\
+  \nterm{U_v'} \subseteq \nterm{U}\\
+  \nterm{n} \in \nterm{U_v'}
+}{
+  \connected{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{U_v'}}{\nterm{n}}{\nterm{\emptyset}}
+}\\
+
+But $\nterm{U'}$ is not empty, contradiction.\\
+\\
+
+All but one of all of the other cases have a premise of the form
+$\ver{\nterm{n}}{\nterm{c'}} \in \cons{\nterm{v}}{\nterm{vs}}$ where
+$\nterm{c'}$ is not $\doonce{\nterm{a}}{\nterm{n'}}$. This is a contradiction by
+Lemma 4 since we have $\ver{\nterm{n}}{\doonce{\nterm{a}}{\nterm{n'}}} \in
+\cons{\nterm{v}}{\nterm{vs}}$.\\
+\\
+
+Thus the only case left is\\
+\\
+\inferrule{
+  \ver{\nterm{n}}{\doonce{\nterm{a}}{\nterm{n'}}} \in \nterm{vs}\\
+  \connected{\cons{\nterm{v}}{\nterm{vs}}}{U_v' \cup \singletonset{n}}{n'}{U''}\\
+  \nterm{n} \notin \nterm{U_v'}
+}{
+  \connected{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{U_v'}}{\nterm{n}}{\nterm{U''} \cup \singletonset{\nterm{n}}}
+}\\
+\\
+
+If we let $\nterm{U_v''}$ be $\nterm{U_v' \cup \singletonset{n}}$, then we can
+case analyze on $\connected{\cons{\nterm{v}}{\nterm{vs}}}{U_v''}{n'}{U''}$:\\
+\\
+
+Inner case
+\inferrule{
+  \defined{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{U}}\\
+  \nterm{U_v''} \subseteq \nterm{U}\\
+  \nterm{n'} \in \nterm{U_v''}
+}{
+  \connected{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{U_v''}}{\nterm{n'}}{\nterm{\emptyset}}
+}\\
+
+Then since we have $\nterm{n'} \in \nterm{U_v''}$, by Lemma 5, $\exists\ c'$
+such that $\ver{\nterm{n'}}{\nterm{c'}} \in \cons{\nterm{v}}{\nterm{vs}}$.\\
+
+In any of the other cases, one of the premises gives us
+$\ver{\nterm{n'}}{\nterm{c'}} \in \cons{\nterm{v}}{\nterm{vs}}$ for some
+$\nterm{c'}$.
+\\
+
+In any of the cases, if we combine $\ver{\nterm{n'}}{\nterm{c'}} \in
+\cons{\nterm{v}}{\nterm{vs}}$ with (2), we can conclude
+$\cfgvalid{\cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\cons{\nterm{a}}{\nterm{O}}}}$
+as desired.\\
+\\
+
+Case
+\inferrule{
+  \ver{\nterm{n}}{\dountil{\nterm{a}}{\nterm{cnd}}{\nterm{n'}}} \in \nterm{vs}
+}{
+  \steps{
+    \cfg{\nterm{n}}{\nterm{vs}}{\cons{\nterm{true}}{\nterm{I}}}{\nterm{O}}
+  }{
+    \cfg{\nterm{n'}}{\nterm{vs}}{\nterm{I}}{\cons{\nterm{a}}{\nterm{O}}}
+  }
+}\\
+\\
+
+So taking into account (1), $\nterm{cfg}$ is of the form
+$\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\cons{\nterm{true}}{\nterm{I'}}}{\nterm{O}}$
+and $\nterm{cfg'}$ is of the form
+$\cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\cons{\nterm{a}}{\nterm{O}}}$.
+The rest of the proof for this case is identical to above except $\nterm{c}$ is
+$\dountil{\nterm{a}}{\nterm{cnd}}{\nterm{n'}}$ and the end conclusion is that
+$\cfgvalid{\cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\cons{\nterm{a}}{\nterm{O}}}}$.\\
+\\
+
+Case
+\inferrule{
+  \ver{\nterm{n}}{\dountil{\nterm{a}}{\nterm{cnd}}{\nterm{n'}}} \in \nterm{vs}
+}{
+  \steps{
+    \cfg{\nterm{n}}{\nterm{vs}}{\cons{\nterm{false}}{\nterm{I}}}{\nterm{O}}
+  }{
+    \cfg{\nterm{n}}{\nterm{vs}}{\nterm{I}}{\cons{\nterm{a}}{\nterm{O}}}
+  }
+}\\
+\\
+
+So taking into account (1), $\nterm{cfg}$ is of the form
+$\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\cons{\nterm{false}}{\nterm{I'}}}{\nterm{O}}$
+and $\nterm{cfg'}$ is of the form
+$\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\cons{\nterm{a}}{\nterm{O}}}$.
+The rest of the proof for this case is identical to above except $\nterm{c}$ is
+$\dountil{\nterm{a}}{\nterm{cnd}}{\nterm{n'}}$ and the end conclusion is that
+$\cfgvalid{\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\cons{\nterm{a}}{\nterm{O}}}}$.\\
+\\
+
+Case
+\inferrule{
+  \ver{\nterm{n}}{\goto{\nterm{n'}}} \in \nterm{vs}
+}{
+  \steps{
+    \cfg{\nterm{n}}{\nterm{vs}}{\nterm{I}}{\nterm{O}}
+  }{
+    \cfg{\nterm{n'}}{\nterm{vs}}{\nterm{I}}{\nterm{O}}
+  }
+}\\
+\\
+
+So taking into account (1), $\nterm{cfg}$ is of the form
+$\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}$
+and $\nterm{cfg'}$ is of the form
+$\cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}$.
+The rest of the proof for this case is identical to above except $\nterm{c}$ is
+$\goto{\nterm{n'}}$ and the end conclusion is that
+$\cfgvalid{\cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}}$.\\
+\\
+
+Case
+\inferrule{
+  \ver{\nterm{n}}{\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}} \in \nterm{vs}
+}{
+  \steps{
+    \cfg{\nterm{n}}{\nterm{vs}}{\cons{\nterm{true}}{\nterm{I}}}{\nterm{O}}
+  }{
+    \cfg{\nterm{n'}}{\nterm{vs}}{\nterm{I}}{\nterm{O}}
+  }
+}\\
+\\
+
+So taking into account (1), $\nterm{cfg}$ is of the form
+$\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\cons{\nterm{true}}{\nterm{I'}}}{\nterm{O}}$
+and $\nterm{cfg'}$ is of the form
+$\cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\nterm{O}}$.
+The rest of the proof for this case is identical to above except $\nterm{c}$ is
+$\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}$ and the end conclusion is that
+$\cfgvalid{\cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\cons{\nterm{a}}{\nterm{O}}}}$.\\
+\\
+
+Case
+\inferrule{
+  \ver{\nterm{n}}{\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}} \in \nterm{vs}
+}{
+  \steps{
+    \cfg{\nterm{n}}{\nterm{vs}}{\cons{\nterm{false}}{\nterm{I}}}{\nterm{O}}
+  }{
+    \cfg{\nterm{n''}}{\nterm{vs}}{\nterm{I}}{\nterm{O}}
+  }
+}\\
+\\
+
+So taking into account (1), $\nterm{cfg}$ is of the form
+$\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\cons{\nterm{false}}{\nterm{I'}}}{\nterm{O}}$
+and $\nterm{cfg'}$ is of the form
+$\cfg{\nterm{n''}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\nterm{O}}$. We do
+another case analysis on (8).\\
+\\
+
+Inner case
+\inferrule{
+  \defined{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{U}}\\
+  \nterm{U_v'} \subseteq \nterm{U}\\
+  \nterm{n} \in \nterm{U_v'}
+}{
+  \connected{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{U_v'}}{\nterm{n}}{\nterm{\emptyset}}
+}\\
+
+But $\nterm{U'}$ is not empty, contradiction.\\
+\\
+
+All but one of all of the other cases have a premise of the form
+$\ver{\nterm{n}}{\nterm{c'}} \in \cons{\nterm{v}}{\nterm{vs}}$ where
+$\nterm{c'}$ is not $\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}$. This is a
+contradiction by Lemma 4 since we have
+$\ver{\nterm{n}}{\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}} \in
+\cons{\nterm{v}}{\nterm{vs}}$.\\
+\\
+
+Thus the only case left is\\
+\\
+\inferrule{
+  \ver{\nterm{n}}{\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}} \in \cons{\nterm{v}}{\nterm{vs}}\\
+  \connected{\cons{\nterm{v}}{\nterm{vs}}}{U_v' \cup \singletonset{n}}{n'}{U}\\
+  \connected{\cons{\nterm{v}}{\nterm{vs}}}{U_v' \cup U \cup
+    \singletonset{n}}{n''}{U''}\\
+  \nterm{n} \notin \nterm{U_v'}
+}{
+  \connected{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{U_v'}}{\nterm{n}}{\nterm{U}
+    \cup \nterm{U''} \cup \singletonset{\nterm{n}}}
+}\\
+\\
+
+If we let $\nterm{U_v''}$ be $\nterm{U_v' \cup U \cup \singletonset{n}}$, then we can
+case analyze on $\connected{\cons{\nterm{v}}{\nterm{vs}}}{U_v''}{n''}{U''}$:\\
+\\
+
+Inner case
+\inferrule{
+  \defined{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{U}}\\
+  \nterm{U_v''} \subseteq \nterm{U}\\
+  \nterm{n''} \in \nterm{U_v''}
+}{
+  \connected{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{U_v''}}{\nterm{n''}}{\nterm{\emptyset}}
+}\\
+
+Then since we have $\nterm{n''} \in \nterm{U_v''}$, by Lemma 5, $\exists\ c'$
+such that $\ver{\nterm{n''}}{\nterm{c'}} \in \cons{\nterm{v}}{\nterm{vs}}$.\\
+
+In any of the other cases, one of the premises gives us
+$\ver{\nterm{n''}}{\nterm{c'}} \in \cons{\nterm{v}}{\nterm{vs}}$ for some
+$\nterm{c'}$.
+\\
+
+In any of the cases, if we combine $\ver{\nterm{n''}}{\nterm{c'}} \in
+\cons{\nterm{v}}{\nterm{vs}}$ with (2), we can conclude
+$\cfgvalid{\cfg{\nterm{n''}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\nterm{O}}}$
+as desired.\\
+\\
+
 \end{document}
