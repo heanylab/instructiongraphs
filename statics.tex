@@ -71,10 +71,11 @@ exactly the set $\nterm{U}$ of vertex indices.
 
 We let $\nterm{U} \subseteq \mathbb{Z}$ be a subset of the integers.\\
 
-$\connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U}}$ means that the
-vertex represented by $\nterm{n}$ is connected to each vertex represented by an
-index in $\nterm{U}$ of the vertices in $\nterm{vs}$, where $\nterm{U_v}$ is the
-set of vertex indices of vertices already visited.
+$\connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U}}$ means that there
+exists a path from the vertex represented by $\nterm{n}$ to each vertex
+represented by an index in $\nterm{U}$ without going through any vertex in
+$\nterm{U_v}$. By ``represented'' we mean that $\nterm{vs}$ contains a vertex
+for that index.\\
 
 \begin{mathpar}
   \inferrule{
