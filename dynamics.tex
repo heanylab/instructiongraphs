@@ -50,7 +50,7 @@ state for the program execution context.
     \ver{\nterm{n}}{\progend} \in \nterm{vs}
   }{
     \terminated{\cfg{\nterm{n}}{\nterm{vs}}{\nterm{I}}{\nterm{O}}}
-  }
+  } \mathtt{(cfg_{terminated})}
 \end{mathpar}
 
 \section{Waiting}
@@ -65,13 +65,13 @@ requires more input to continue.
     \ver{\nterm{n}}{\dountil{\nterm{a}}{\nterm{cnd}}{\nterm{n'}}} \in \nterm{vs}
   }{
     \waiting{\cfg{\nterm{n}}{\nterm{vs}}{\nterm{[\ ]}}{\nterm{O}}}
-  }
+  } \mathtt{(dountil_{waiting})}
 
   \inferrule{
     \ver{\nterm{n}}{\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}} \in \nterm{vs}
   }{
     \waiting{\cfg{\nterm{n}}{\nterm{vs}}{\nterm{[\ ]}}{\nterm{O}}}
-  }
+  } \mathtt{(ifthen_{waiting})}
 \end{mathpar}
 
 \section{Steps}
@@ -94,7 +94,7 @@ $\nterm{vs}$ with remaining input $\nterm{I'}$ and current output $\nterm{O'}$.
     }{
       \cfg{\nterm{n'}}{\nterm{vs}}{\nterm{I}}{\cons{\nterm{a}}{\nterm{O}}}
     }
-  }
+  } \mathtt{(doonce_{steps})}
 
   \inferrule{
     \ver{\nterm{n}}{\dountil{\nterm{a}}{\nterm{cnd}}{\nterm{n'}}} \in \nterm{vs}
@@ -104,7 +104,7 @@ $\nterm{vs}$ with remaining input $\nterm{I'}$ and current output $\nterm{O'}$.
     }{
       \cfg{\nterm{n'}}{\nterm{vs}}{\nterm{I}}{\cons{\nterm{a}}{\nterm{O}}}
     }
-  }
+  } \mathtt{(dountil^1_{steps})}
 
   \inferrule{
     \ver{\nterm{n}}{\dountil{\nterm{a}}{\nterm{cnd}}{\nterm{n'}}} \in \nterm{vs}
@@ -114,7 +114,7 @@ $\nterm{vs}$ with remaining input $\nterm{I'}$ and current output $\nterm{O'}$.
     }{
       \cfg{\nterm{n}}{\nterm{vs}}{\nterm{I}}{\cons{\nterm{a}}{\nterm{O}}}
     }
-  }
+  } \mathtt{(dountil^2_{steps})}
 
   \inferrule{
     \ver{\nterm{n}}{\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}} \in \nterm{vs}
@@ -124,7 +124,7 @@ $\nterm{vs}$ with remaining input $\nterm{I'}$ and current output $\nterm{O'}$.
     }{
       \cfg{\nterm{n'}}{\nterm{vs}}{\nterm{I}}{\nterm{O}}
     }
-  }
+  } \mathtt{(ifthen^1_{steps})}
 
   \inferrule{
     \ver{\nterm{n}}{\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}} \in \nterm{vs}
@@ -134,7 +134,7 @@ $\nterm{vs}$ with remaining input $\nterm{I'}$ and current output $\nterm{O'}$.
     }{
       \cfg{\nterm{n''}}{\nterm{vs}}{\nterm{I}}{\nterm{O}}
     }
-  }
+  } \mathtt{(ifthen^2_{steps})}
 
   \inferrule{
     \ver{\nterm{n}}{\goto{\nterm{n'}}} \in \nterm{vs}
@@ -144,7 +144,7 @@ $\nterm{vs}$ with remaining input $\nterm{I'}$ and current output $\nterm{O'}$.
     }{
       \cfg{\nterm{n'}}{\nterm{vs}}{\nterm{I}}{\nterm{O}}
     }
-  }
+  } \mathtt{(goto_{steps})}
 \end{mathpar}
 
 \end{document}

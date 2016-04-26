@@ -39,7 +39,7 @@ $\valid{\nterm{p}}$ means that the Program $\nterm{p}$ is a valid program.
     }
   }{
     \valid{\prog{\nterm{\ver{\nterm{s}}{\nterm{c}}}}{\nterm{vs}}}
-  }
+  } \mathtt{(P_{valid})}
 \end{mathpar}
 
 \section{Defined}
@@ -53,7 +53,7 @@ exactly the set $\nterm{U}$ of vertex indices.
   \inferrule{
   }{
     \defined{\nterm{nil}}{\{\ \}}\\
-  }
+  } \mathtt{(nil_{defined})}
 
   \inferrule{
     \defined{\nterm{vs}}{\nterm{U}}\\
@@ -64,7 +64,7 @@ exactly the set $\nterm{U}$ of vertex indices.
     }{
       \nterm{U} \cup \singletonset{\nterm{n}}
     }
-  }
+  } \mathtt{(cons_{defined})}
 \end{mathpar}
 
 \section{Connected}
@@ -84,7 +84,7 @@ for that index.\\
     \nterm{n} \in \nterm{U_v}
   }{
     \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{\emptyset}}
-  }
+  } \mathtt{(visited_{connected})}
 
   \inferrule{
     \defined{\nterm{vs}}{\nterm{U}}\\
@@ -93,7 +93,7 @@ for that index.\\
     \nterm{n} \notin \nterm{U_v}
   }{
     \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\singletonset{\nterm{n}}}
-  }
+  } \mathtt{(end_{connected})}
 
   \inferrule{
     \ver{\nterm{n}}{\doonce{\nterm{a}}{\nterm{n'}}} \in \nterm{vs}\\
@@ -101,7 +101,7 @@ for that index.\\
     \nterm{n} \notin \nterm{U_v}
   }{
     \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \singletonset{\nterm{n}}}
-  }
+  } \mathtt{(doonce_{connected})}
 
   \inferrule{
     \ver{\nterm{n}}{\dountil{\nterm{a}}{\nterm{cnd}}{\nterm{n'}}} \in \nterm{vs}\\
@@ -109,7 +109,7 @@ for that index.\\
     \nterm{n} \notin \nterm{U_v}
   }{
     \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \singletonset{\nterm{n}}}
-  }
+  } \mathtt{(dountil_{connected})}
 
   \inferrule{
     \ver{\nterm{n}}{\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}} \in \nterm{vs}\\
@@ -118,7 +118,7 @@ for that index.\\
     \nterm{n} \notin \nterm{U_v}
   }{
     \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \nterm{U'} \cup \singletonset{\nterm{n}}}
-  }
+  } \mathtt{(ifthen_{connected})}
 
   \inferrule{
     \ver{\nterm{n}}{\goto{\nterm{n'}}} \in \nterm{vs}\\
@@ -126,7 +126,7 @@ for that index.\\
     \nterm{n} \notin \nterm{U_v}
   }{
     \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \singletonset{\nterm{n}}}
-  }
+  } \mathtt{(goto_{connected})}
 \end{mathpar}
 
 \end{document}
