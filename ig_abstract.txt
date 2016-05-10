@@ -1,0 +1,10 @@
+A Domain-Specific Programming Language for Robots based on Instruction Graphs
+
+Instruction graphs are a recently proposed data structure that encodes a
+sequence of actions for a robot to perform. For example, in order for a robot to
+purchase coffee, a robot might move forward, looking for a barista every 5
+meters, then ask for a coffee once a barista is found. An instruction graph is
+an explicit representation of these actions, where each action is a vertex and
+edges are the transitions between them. We contribute a formalization of
+instruction graphs as a domain-specific programming language, prove type safety
+for the language, and provide an interpreter.
