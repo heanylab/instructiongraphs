@@ -2,15 +2,17 @@
 
 from constants import *
 from statics import findn
+import turtlebot_actions as turtlebot
 
 def doaction(action):
   # we currently only support moving and saying in this simulation
   if action.operator == MOVE:
-    (a, b, c, d, e) = action.params
-    print("Moving with parameters (%s, %s, %s, %s, %s)" %(a, b, c, d, e))
+    (distance, angular) = action.params
+    print "Moving for distance %s at rotation %s" %(distance, angular)
+    turtlebot.move(distance, angular)
   elif action.operator == SAY:
     (s,) = action.params
-    print("Robot says: '%s'" %action.params[0])
+    turtlebot.say(s)
   else:
     raise Exception("Runtime Error: Unsupported action!")
 
