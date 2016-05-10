@@ -1,5 +1,6 @@
 \documentclass[12pt]{article}
 
+\usepackage{amsthm}
 \usepackage{mathpartir}
 \usepackage{fancyhdr}
 \usepackage{ig}
@@ -21,6 +22,8 @@
 
 \thispagestyle{simple}
 
+\newtheorem{thm}{Theorem}
+
 \section{cfgvalid}
 
 $\cfgvalid{\nterm{cfg}}$ means that the configuration $\nterm{cfg}$ is a valid
@@ -32,17 +35,19 @@ configuration.
     \ver{\nterm{n}}{\nterm{c}} \in \nterm{\cons{\nterm{v}}{\nterm{vs}}}\\
   }{
     \cfgvalid{\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}}
-  }
+  } \mathtt{(cfg_{cfgvalid})}
 \end{mathpar}
 
 \section{Progress}
 
+\begin{thm}
 If $\cfgvalid{\nterm{cfg}}$, then either
 \begin{enumerate}
   \item $\terminated{\nterm{cfg}}$
   \item $\waiting{\nterm{cfg}}$
   \item $\exists\ \nterm{cfg'}\ \texttt{s.t.} \steps{\nterm{cfg}}{\nterm{cfg'}}$
 \end{enumerate}
+\end{thm}
 
 \subsection{Proof of Progress}
 
@@ -260,8 +265,10 @@ $\terminated{\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}
 
 \section{Preservation}
 
+\begin{thm}
 If $\cfgvalid{\nterm{cfg}}$ and $\steps{\nterm{cfg}}{\nterm{cfg'}}$ then
 $\cfgvalid{\nterm{cfg'}}$.
+\end{thm}
 
 \subsection{Lemma 1}
 
