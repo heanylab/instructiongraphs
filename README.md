@@ -24,3 +24,10 @@ described in https://www.cs.cmu.edu/~mmv/papers/14aamas-MericliEtAl.pdf.
   second to angular rotation.
 - In order to detect obstacles, the interpreter relies on user input. Enter 'y',
   'yes', or an empty string to respond with 'yes', else 'no'.
+
+## Demo
+A short video demonstrating the 'getcoffee.ig' program in action is
+[here](https://www.andrew.cmu.edu/user/adbenson/research/ig_turtlebot_demo.mp4).
+You might wonder why I filmed it with a phone camera. This was mostly due to the
+fact that the turtlebot simulator bogged down my VM so badly that I was worried
+what a screencast program might do to it.
