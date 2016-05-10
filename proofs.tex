@@ -96,7 +96,7 @@ Case $\nterm{c}$ is $\dountil{\nterm{a}}{\nterm{cnd}}{\nterm{n'}}$:\\
 
 We use structural induction on I.\\
 
-Inner case $\nterm{I}$ is $[\ ]$:\\
+Subcase $\nterm{I}$ is $[\ ]$:\\
 
 Then by the rule
 
@@ -111,7 +111,7 @@ Then by the rule
 we can conclude
 $\waiting{\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}}$.\\
 
-Inner case $\nterm{I}$ is $\cons{\nterm{true}}{\nterm{I'}}$:\\
+Subcase $\nterm{I}$ is $\cons{\nterm{true}}{\nterm{I'}}$:\\
 
 Then by the rule
 
@@ -134,7 +134,7 @@ $\steps{
    \cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\cons{\nterm{a}}{\nterm{O}}}
  }$.\\
 
-Inner case $\nterm{I}$ is $\cons{\nterm{false}}{\nterm{I'}}$:\\
+Subcase $\nterm{I}$ is $\cons{\nterm{false}}{\nterm{I'}}$:\\
 
 Then by the rule
 
@@ -162,7 +162,7 @@ Case $\nterm{c}$ is $\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}$:\\
 
 We use structural induction on I.\\
 
-Inner case $\nterm{I}$ is $[\ ]$:\\
+Subcase $\nterm{I}$ is $[\ ]$:\\
 
 Then by the rule
 
@@ -177,7 +177,7 @@ Then by the rule
 we can conclude
 $\waiting{\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}}$.\\
 
-Inner case $\nterm{I}$ is $\cons{\nterm{true}}{\nterm{I'}}$:\\
+Subcase $\nterm{I}$ is $\cons{\nterm{true}}{\nterm{I'}}$:\\
 
 Then by the rule
 
@@ -200,7 +200,7 @@ $\steps{
    \cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\nterm{O}}
  }$.\\
 
-Inner case $\nterm{I}$ is $\cons{\nterm{false}}{\nterm{I'}}$:\\
+Subcase $\nterm{I}$ is $\cons{\nterm{false}}{\nterm{I'}}$:\\
 
 Then by the rule
 
@@ -333,7 +333,7 @@ Case
   \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \singletonset{\nterm{n}}}
 }\\
 
-Identical to the case above.\\
+Analogous to the case above.\\
 \\
 
 Case
@@ -345,7 +345,7 @@ Case
   \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \singletonset{\nterm{n}}}
 }\\
 
-Identical to the case above.\\
+Analogous to the case above.\\
 \\
 
 Case
@@ -526,7 +526,7 @@ Case
   \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\singletonset{\nterm{n}}}
 }\\
 
-Identical to the case above.\\
+Analogous to the case above.\\
 \\
 
 Case
@@ -554,7 +554,7 @@ Case
   \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \singletonset{\nterm{n}}}
 }\\
 
-Identical to the case above.\\
+Analogous to the case above.\\
 \\
 
 Case
@@ -566,7 +566,7 @@ Case
   \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \singletonset{\nterm{n}}}
 }\\
 
-Identical to the case above.\\
+Analogous to the case above.\\
 \\
 
 Case
@@ -579,7 +579,7 @@ Case
   \connected{\nterm{vs}}{\nterm{U_v}}{\nterm{n}}{\nterm{U} \cup \nterm{U'} \cup \singletonset{\nterm{n}}}
 }\\
 
-Identical to the case above.\\
+Analogous to the case above.\\
 \\
 
 \subsection{Proof of Preservation}
@@ -691,7 +691,7 @@ $\cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\cons{\nterm{a}}{\nte
 We do another case analysis on (8).\\
 \\
 
-Inner case
+Subcase
 \inferrule{
   \defined{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{U}}\\
   \nterm{U_v'} \subseteq \nterm{U}\\
@@ -703,14 +703,14 @@ Inner case
 But $\nterm{U'}$ is not empty, contradiction.\\
 \\
 
-All but one of all of the other cases have a premise of the form
+All but one of all of the other subcases have a premise of the form
 $\ver{\nterm{n}}{\nterm{c'}} \in \cons{\nterm{v}}{\nterm{vs}}$ where
 $\nterm{c'}$ is not $\doonce{\nterm{a}}{\nterm{n'}}$. This is a contradiction by
 Lemma 4 since we have $\ver{\nterm{n}}{\doonce{\nterm{a}}{\nterm{n'}}} \in
 \cons{\nterm{v}}{\nterm{vs}}$.\\
 \\
 
-Thus the only case left is\\
+Thus the only subcase left is\\
 \\
 \inferrule{
   \ver{\nterm{n}}{\doonce{\nterm{a}}{\nterm{n'}}} \in \nterm{vs}\\
@@ -725,7 +725,7 @@ If we let $\nterm{U_v''}$ be $\nterm{U_v' \cup \singletonset{n}}$, then we can
 case analyze on $\connected{\cons{\nterm{v}}{\nterm{vs}}}{U_v''}{n'}{U''}$:\\
 \\
 
-Inner case
+Sub-subcase
 \inferrule{
   \defined{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{U}}\\
   \nterm{U_v''} \subseteq \nterm{U}\\
@@ -737,13 +737,13 @@ Inner case
 Then since we have $\nterm{n'} \in \nterm{U_v''}$, by Lemma 5, $\exists\ c'$
 such that $\ver{\nterm{n'}}{\nterm{c'}} \in \cons{\nterm{v}}{\nterm{vs}}$.\\
 
-In any of the other cases, one of the premises gives us
+In any of the other sub-subcases, one of the premises gives us
 $\ver{\nterm{n'}}{\nterm{c'}} \in \cons{\nterm{v}}{\nterm{vs}}$ for some
 $\nterm{c'}$.
 \\
 
-In any of the cases, if we combine $\ver{\nterm{n'}}{\nterm{c'}} \in
-\cons{\nterm{v}}{\nterm{vs}}$ with (2), we can conclude
+So regardless of the sub-subcase, we have $\ver{\nterm{n'}}{\nterm{c'}} \in
+\cons{\nterm{v}}{\nterm{vs}}$. Combining with (2), we can conclude
 $\cfgvalid{\cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\cons{\nterm{a}}{\nterm{O}}}}$
 as desired.\\
 \\
@@ -764,7 +764,7 @@ So taking into account (1), $\nterm{cfg}$ is of the form
 $\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\cons{\nterm{true}}{\nterm{I'}}}{\nterm{O}}$
 and $\nterm{cfg'}$ is of the form
 $\cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\cons{\nterm{a}}{\nterm{O}}}$.
-The rest of the proof for this case is identical to above except $\nterm{c}$ is
+The rest of the proof for this case is analogous to above except $\nterm{c}$ is
 $\dountil{\nterm{a}}{\nterm{cnd}}{\nterm{n'}}$ and the end conclusion is that
 $\cfgvalid{\cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\cons{\nterm{a}}{\nterm{O}}}}$.\\
 \\
@@ -785,7 +785,7 @@ So taking into account (1), $\nterm{cfg}$ is of the form
 $\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\cons{\nterm{false}}{\nterm{I'}}}{\nterm{O}}$
 and $\nterm{cfg'}$ is of the form
 $\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\cons{\nterm{a}}{\nterm{O}}}$.
-The rest of the proof for this case is identical to above except $\nterm{c}$ is
+The rest of the proof for this case is analogous to above except $\nterm{c}$ is
 $\dountil{\nterm{a}}{\nterm{cnd}}{\nterm{n'}}$ and the end conclusion is that
 $\cfgvalid{\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\cons{\nterm{a}}{\nterm{O}}}}$.\\
 \\
@@ -806,7 +806,7 @@ So taking into account (1), $\nterm{cfg}$ is of the form
 $\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}$
 and $\nterm{cfg'}$ is of the form
 $\cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}$.
-The rest of the proof for this case is identical to above except $\nterm{c}$ is
+The rest of the proof for this case is analogous to above except $\nterm{c}$ is
 $\goto{\nterm{n'}}$ and the end conclusion is that
 $\cfgvalid{\cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I}}{\nterm{O}}}$.\\
 \\
@@ -827,7 +827,7 @@ So taking into account (1), $\nterm{cfg}$ is of the form
 $\cfg{\nterm{n}}{\cons{\nterm{v}}{\nterm{vs}}}{\cons{\nterm{true}}{\nterm{I'}}}{\nterm{O}}$
 and $\nterm{cfg'}$ is of the form
 $\cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\nterm{O}}$.
-The rest of the proof for this case is identical to above except $\nterm{c}$ is
+The rest of the proof for this case is analogous to above except $\nterm{c}$ is
 $\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}$ and the end conclusion is that
 $\cfgvalid{\cfg{\nterm{n'}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\cons{\nterm{a}}{\nterm{O}}}}$.\\
 \\
@@ -851,7 +851,7 @@ $\cfg{\nterm{n''}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\nterm{O}}$. We do
 another case analysis on (8).\\
 \\
 
-Inner case
+Subcase
 \inferrule{
   \defined{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{U}}\\
   \nterm{U_v'} \subseteq \nterm{U}\\
@@ -863,7 +863,7 @@ Inner case
 But $\nterm{U'}$ is not empty, contradiction.\\
 \\
 
-All but one of all of the other cases have a premise of the form
+All but one of all of the other subcases have a premise of the form
 $\ver{\nterm{n}}{\nterm{c'}} \in \cons{\nterm{v}}{\nterm{vs}}$ where
 $\nterm{c'}$ is not $\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}$. This is a
 contradiction by Lemma 4 since we have
@@ -871,7 +871,7 @@ $\ver{\nterm{n}}{\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}} \in
 \cons{\nterm{v}}{\nterm{vs}}$.\\
 \\
 
-Thus the only case left is\\
+Thus the only subcase left is\\
 \\
 \inferrule{
   \ver{\nterm{n}}{\ifelse{\nterm{cnd}}{\nterm{n'}}{\nterm{n''}}} \in \cons{\nterm{v}}{\nterm{vs}}\\
@@ -889,7 +889,7 @@ If we let $\nterm{U_v''}$ be $\nterm{U_v' \cup U \cup \singletonset{n}}$, then w
 case analyze on $\connected{\cons{\nterm{v}}{\nterm{vs}}}{U_v''}{n''}{U''}$:\\
 \\
 
-Inner case
+Sub-subcase
 \inferrule{
   \defined{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{U}}\\
   \nterm{U_v''} \subseteq \nterm{U}\\
@@ -901,15 +901,14 @@ Inner case
 Then since we have $\nterm{n''} \in \nterm{U_v''}$, by Lemma 5, $\exists\ c'$
 such that $\ver{\nterm{n''}}{\nterm{c'}} \in \cons{\nterm{v}}{\nterm{vs}}$.\\
 
-In any of the other cases, one of the premises gives us
+In any of the other sub-subcases, one of the premises gives us
 $\ver{\nterm{n''}}{\nterm{c'}} \in \cons{\nterm{v}}{\nterm{vs}}$ for some
 $\nterm{c'}$.
 \\
 
-In any of the cases, if we combine $\ver{\nterm{n''}}{\nterm{c'}} \in
-\cons{\nterm{v}}{\nterm{vs}}$ with (2), we can conclude
+So regardless of the sub-subcase, we have $\ver{\nterm{n''}}{\nterm{c'}} \in
+\cons{\nterm{v}}{\nterm{vs}}$. Combining with (2), we can conclude
 $\cfgvalid{\cfg{\nterm{n''}}{\cons{\nterm{v}}{\nterm{vs}}}{\nterm{I'}}{\nterm{O}}}$
 as desired.\\
-\\
 
 \end{document}
