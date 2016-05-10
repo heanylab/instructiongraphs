@@ -61,6 +61,6 @@ t_ignore = " \t\n"
 
 # error
 def t_error(t):
-  print("Unknown character '%s'" %t.value[0])
-  print("Token: %s" %t)
+  print "Unknown character '%s'" %t.value[0]
+  print "Token: %s" %t
   raise Exception("Lexer Error")

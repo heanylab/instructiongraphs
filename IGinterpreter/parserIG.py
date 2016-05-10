@@ -8,43 +8,43 @@ class Node(object):
   def __init__(self, operator, params):
     self.operator = operator
     self.params = params
-  #TODO: this is broken, please fix
-  def print(self, tabinit):
-    print(tabinit + self.operator)
+  # TODO: this is broken, please fix
+  def pprint(self, tabinit):
+    print tabinit + self.operator
     for param in self.params:
       if type(param) == float:
-        print(tabinit + "  " + str(param))
+        print tabinit + "  " + str(param)
       elif type(param) == str:
-        print(tabinit + "  " + param)
+        print tabinit + "  " + param
       else:
-        param.print(tabinit + "  ")
+        param.pprint(tabinit + "  ")
   def prettyprint(self):
-    self.print("")
+    self.pprint("")
 
 # sort-specific nodes. We don't need one for Vertices because that's a list.
 class Program(Node):
   def __init__(self, operator, params):
-    super().__init__(operator, params)
+    super(Program, self).__init__(operator, params)
     assert(operator in [P])
 
 class Vertex(Node):
   def __init__(self, operator, params):
-    super().__init__(operator, params)
+    super(Vertex, self).__init__(operator, params)
     assert(operator in [V])
 
 class Content(Node):
   def __init__(self, operator, params):
-    super().__init__(operator, params)
+    super(Content, self).__init__(operator, params)
     assert(operator in [DOONCE, DOUNTIL, IFELSE, GOTO, END])
 
 class Action(Node):
   def __init__(self, operator, params):
-    super().__init__(operator, params)
+    super(Action, self).__init__(operator, params)
     assert(operator in [MOVE, SAY])
 
 class Condition(Node):
   def __init__(self, operator, params):
-    super().__init__(operator, params)
+    super(Condition, self).__init__(operator, params)
     assert(operator in [VISIBLE, STOP])
 
 # parsing rules
@@ -111,6 +111,6 @@ def p_cnd(t):
 
 # error
 def p_error(t):
-  print(t)
-  print("Found syntax error in input!")
+  print t
+  print "Found syntax error in input!"
   raise Exception("Parser Error")

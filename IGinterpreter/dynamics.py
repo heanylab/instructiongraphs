@@ -18,15 +18,15 @@ def checkcond(cond):
   # we currently only support checking for visible objects and if an object is
   # nearby
   if cond.operator == VISIBLE:
-    print("Checking if %s is visible..." %cond.params[0])
-    print("Is %s visible?" %cond.params[0])
-    ans = input()
+    print "Checking if %s is visible..." %cond.params[0]
+    print "Is %s visible?" %cond.params[0]
+    ans = raw_input()
     return ans in ("yes", "y", "", "\n")
   elif cond.operator == STOP:
-    print("Checking if %s is within %s distance..." %(cond.params[1],
-                                                      cond.params[0]))
-    print("Is %s within %s distance?" %(cond.params[1], cond.params[0]))
-    ans = input()
+    print "Checking if %s is within %s distance..." %(cond.params[1],
+                                                      cond.params[0])
+    print "Is %s within %s distance?" %(cond.params[1], cond.params[0])
+    ans = raw_input()
     return ans in ("yes", "y", "", "\n")
 
 def trystep(config):
@@ -69,14 +69,14 @@ def eval(ast):
   while True:
     (status, config2) = trystep(config)
     if status == WAITING:
-      print("Robot is waiting for input! But this shouldn't happen in this simulation! What's going on?")
+      print "Robot is waiting for input! But this shouldn't happen in this simulation! What's going on?"
       break
     elif status == TERMINATED:
-      print("Finished!")
+      print "Finished!"
       break
     else:
       config = config2
   (_, _, _, O) = config
-  print("End output: ", end="")
-  print(O)
+  print "End output: ",
+  print O
   return
