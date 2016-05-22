@@ -31,3 +31,8 @@ A short video demonstrating the 'getcoffee.ig' program in action is
 You might wonder why I filmed it with a phone camera. This was mostly due to the
 fact that the turtlebot simulator bogged down my VM so badly that I was worried
 what a screencast program might do to it.
+
+## Report
+The final report for 15-400 is in the `report` subdirectory. The paper itself is
+`paper.tex`, but the report also contains several appendices which are the other
+tex files in the directory.
