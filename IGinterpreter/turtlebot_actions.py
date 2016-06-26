@@ -14,11 +14,17 @@ def say(speech):
 def move(distance, angular):
   if not SETUP_DONE: setup()
   cmd_vel = rospy.Publisher("cmd_vel_mux/input/navi", Twist, queue_size=10)
-  r = rospy.Rate(10) # sleep 0.1 at a time
-  move_cmd = Twist()
-  move_cmd.linear.x = 0.5 # m/s
-  move_cmd.angular.z = angular # rad/s
-
-  for i in xrange(int(2*distance)):
-    cmd_vel.publish(move_cmd)
-    r.sleep()
+  rospy.sleep(1)
+  
+  # create a Twist message, fill it in to drive forward
+  twist = Twist()
+  twist.linear.x = 0.5 # m/s
+  for i in range(int(4*distance)):
+      cmd_vel.publish(twist)
+      rospy.sleep(1)
+  # create a twist message, fill it in to turn
+  twist = Twist()
+  twist.angular.z = 0.785398*2    # 90 deg/s
+  for i in range(int(2*angular)):
+      cmd_vel.publish(twist)
+      rospy.sleep(1)
