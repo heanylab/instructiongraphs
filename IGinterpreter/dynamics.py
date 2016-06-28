@@ -3,6 +3,7 @@
 from constants import *
 from statics import findn
 import turtlebot_actions as turtlebot
+import publish
 
 def doaction(action):
   # we currently only support moving and saying in this simulation
@@ -10,6 +11,8 @@ def doaction(action):
     (distance, angular, speed, delta_y, rotation) = action.params
     print "Moving for distance %s at rotation %s with a speed of %s %s %s" \
 	%(distance, angular, speed, delta_y, rotation)
+    publish.publish("Moving for distance %s at rotation %s with a speed of %s %s %s" \
+	%(distance, angular, speed, delta_y, rotation))
     turtlebot.move(distance, angular, speed, delta_y, rotation)
   elif action.operator == SAY:
     (s,) = action.params

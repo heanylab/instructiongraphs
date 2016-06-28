@@ -7,7 +7,7 @@ import ply.yacc as yacc
 import parserIG
 import statics
 import dynamics
-import init
+import publish
 
 import sys
 
@@ -18,7 +18,7 @@ if __name__ == "__main__":
   if len(sys.argv) != 2:
     print "Use: main.py <IG program>"
     exit(1)
-    init.initialize()
+    publish.initialize()
   try:
     igfile = open(sys.argv[1], "r")
     igcode = igfile.read()
@@ -26,7 +26,9 @@ if __name__ == "__main__":
     print e
     print "Could not open file for reading!"
     exit(1)
+  publish.publish("Parsing and validating instructions")
   ast = parser.parse(igcode)
   assert(statics.valid(ast))
+  publish.publish("Running the instruction graph")
   dynamics.eval(ast)
   igfile.close()

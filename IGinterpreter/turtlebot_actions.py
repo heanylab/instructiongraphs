@@ -3,12 +3,14 @@ from geometry_msgs.msg import Twist
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 import actionlib
 from actionlib_msgs.msg import *
+import publish
 
 SETUP_DONE = False
 
 def setup():
-  SETUP_DONE = True
-  rospy.init_node("IG", anonymous=False)
+  publish.initialize()
+  #SETUP_DONE = True
+  #rospy.init_node("IG", anonymous=False)
 
 def say(speech):
   if not SETUP_DONE: setup()
