@@ -51,7 +51,7 @@ class Condition(Node):
 def p_program(t):
   """program : P LPAR vertex COMMA vertices RPAR"""
   t[0] = Program(P, (t[3], t[5]))
-
+  
 def p_vertices(t):
   """vertices : NIL
               | vertex CONS vertices"""
@@ -94,10 +94,10 @@ def p_content(t):
     t[0] = Content(IFELSE, (t[2], t[4], t[6]))
 
 def p_action(t):
-  """action : MOVE LPAR NUM    COMMA NUM RPAR
+  """action : MOVE LPAR NUM    COMMA NUM     COMMA NUM    COMMA NUM    COMMA NUM RPAR
             | SAY  LPAR STRING RPAR"""
   if t[1] == "Move":
-    t[0] = Action(MOVE, (t[3], t[5]))
+    t[0] = Action(MOVE, (t[3], t[5], t[7], t[9], t[11]))
   else:
     t[0] = Action(SAY, (t[3],))
 

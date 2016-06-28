@@ -7,6 +7,7 @@ import ply.yacc as yacc
 import parserIG
 import statics
 import dynamics
+import init
 
 import sys
 
@@ -17,6 +18,7 @@ if __name__ == "__main__":
   if len(sys.argv) != 2:
     print "Use: main.py <IG program>"
     exit(1)
+    init.initialize()
   try:
     igfile = open(sys.argv[1], "r")
     igcode = igfile.read()

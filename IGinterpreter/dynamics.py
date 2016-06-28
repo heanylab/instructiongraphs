@@ -7,9 +7,10 @@ import turtlebot_actions as turtlebot
 def doaction(action):
   # we currently only support moving and saying in this simulation
   if action.operator == MOVE:
-    (distance, angular) = action.params
-    print "Moving for distance %s at rotation %s" %(distance, angular)
-    turtlebot.move(distance, angular)
+    (distance, angular, speed, delta_y, rotation) = action.params
+    print "Moving for distance %s at rotation %s with a speed of %s %s %s" \
+	%(distance, angular, speed, delta_y, rotation)
+    turtlebot.move(distance, angular, speed, delta_y, rotation)
   elif action.operator == SAY:
     (s,) = action.params
     turtlebot.say(s)
