@@ -3,12 +3,12 @@ from geometry_msgs.msg import Twist
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 import actionlib
 from actionlib_msgs.msg import *
-import publish
+import publisher
 
 SETUP_DONE = False
 
 def setup():
-  publish.initialize()
+  publisher.initialize()
   #SETUP_DONE = True
   #rospy.init_node("IG", anonymous=False)
 
@@ -35,7 +35,7 @@ def move(distance, angular, speed, delta_y, rotation):
       cmd_vel.publish(twist)
       rospy.sleep(0.5)
   """
-  rospy.init_node('nav_test', anonymous=False)
+  # rospy.init_node('nav_test', anonymous=False)
   move_base = actionlib.SimpleActionClient("move_base", MoveBaseAction)
   move_base.wait_for_server(rospy.Duration(5))
   goal = MoveBaseGoal()
@@ -55,3 +55,4 @@ def move(distance, angular, speed, delta_y, rotation):
     if state == GoalStatus.SUCCEEDED:
        print "We have moved 3 meters"
   """
+

@@ -3,7 +3,7 @@
 from constants import *
 from statics import findn
 import turtlebot_actions as turtlebot
-import publish
+import publisher
 
 def doaction(action):
   # we currently only support moving and saying in this simulation
@@ -11,13 +11,14 @@ def doaction(action):
     (distance, angular, speed, delta_y, rotation) = action.params
     print "Moving for distance %s at rotation %s with a speed of %s %s %s" \
 	%(distance, angular, speed, delta_y, rotation)
-    publish.publish("Moving for distance %s at rotation %s with a speed of %s %s %s" \
+    publisher.publish("Moving for distance %s at rotation %s with a speed of %s %s %s" \
 	%(distance, angular, speed, delta_y, rotation))
     turtlebot.move(distance, angular, speed, delta_y, rotation)
   elif action.operator == SAY:
     (s,) = action.params
     turtlebot.say(s)
   else:
+    publisher.publish("Runtime Error: Unsupported action!");
     raise Exception("Runtime Error: Unsupported action!")
 
 def checkcond(cond):
@@ -66,6 +67,7 @@ def trystep(config):
     (n2,) = c.params
     return (STEP, (n2, vs, I, O))
   else:
+    publisher.publish("Runtime Error: Unknown Content Operator?");
     raise Exception("Runtime Error: Unknown Content Operator?")
 
 def eval(ast):
@@ -79,6 +81,7 @@ def eval(ast):
       break
     elif status == TERMINATED:
       print "Finished!"
+      publisher.publish("Finished!");
       break
     else:
       config = config2

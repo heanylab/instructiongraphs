@@ -2,6 +2,7 @@
 
 from lexerIG import tokens
 from constants import *
+import publisher
 
 # abstract node class for operators in the AST
 class Node(object):
@@ -113,4 +114,5 @@ def p_cnd(t):
 def p_error(t):
   print t
   print "Found syntax error in input!"
+  publisher.publish("Found syntax error in input!")
   raise Exception("Parser Error")
