@@ -4,6 +4,7 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 import actionlib
 from actionlib_msgs.msg import *
 import publisher
+from math import radians
 
 SETUP_DONE = False
 
@@ -23,15 +24,15 @@ def move(distance, angular, speed, delta_y, rotation):
   
   # create a Twist message, fill it in to drive forward
   twist = Twist()
-  twist.linear.x = speed # m/s
   if speed != 0:
+    twist.linear.x = speed # m/s
     for i in range(int(2*distance*1/speed)):
         cmd_vel.publish(twist)
         rospy.sleep(0.5)
   # create a twist message, fill it in to turn
-  twist = Twist()
-  twist.angular.z = 0.785398*2*rotation    # 90 deg/s
-  for i in range(int(2*angular)):
+  else:
+    twist.angular.z = radians(90)*rotation #0.785398*2*rotation    # 90 deg/s
+    for i in range(int(2*angular)):
       cmd_vel.publish(twist)
       rospy.sleep(0.5)
   """
