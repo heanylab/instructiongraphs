@@ -2,6 +2,7 @@ import rospy
 from std_msgs.msg import String
 
 PUB = rospy.Publisher('instructiongraphs_status',String, queue_size=10)
+GOAL = rospy.Publisher('instructiongraphs_goal',String, queue_size=10)
 IS_INIT = False
 
 def initialize():
@@ -19,6 +20,13 @@ def publish(msg):
   if not IS_INIT:
     initialize()
   PUB.publish(msg)
+
+def pub_goal(msg):
+  global IS_INIT
+  global GOAL
+  if not IS_INIT:
+    initialize()
+  GOAL.publish(msg)
 
 if __name__ == "__main__":
   initialize()
