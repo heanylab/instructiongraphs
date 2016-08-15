@@ -36,10 +36,10 @@ described in https://www.cs.cmu.edu/~mmv/papers/14aamas-MericliEtAl.pdf.
 - `rostopic echo instructiongraphs_goal`
 
 ## Writing a new instruction graph
-- Please refer to `IG implementation readme` in the root.
+- Please refer to `IG Structure.md` in the root.
 
 ## Understanding implementation of interpreter
-- Please refer to `Interpreter implementation readme` in  the root.
+- Please refer to `Interpreter IMPL.md` in  the root.
 
 ## Report
 The final report for 15-400 is in the `report` subdirectory. The paper itself is
