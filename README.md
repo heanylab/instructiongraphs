@@ -18,6 +18,7 @@ described in https://www.cs.cmu.edu/~mmv/papers/14aamas-MericliEtAl.pdf.
 - `roslaunch turtlebot_bringup minimal.launch`
 - `roslaunch turtlebot_navigation amcl_demo.launch`
 - `roslaunch turtlebot_rviz_launchers view_navigation.launch --screen`
+- `python main.py new.ig`
 
 ## Notes about Implementation
 - The interpreter by default requires a running instance of the turtlebot
