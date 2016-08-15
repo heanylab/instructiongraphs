@@ -1,7 +1,12 @@
+# The script is used to initialize node and publish topics.
+
 import rospy
 from std_msgs.msg import String
 
+# Publishes status
 PUB = rospy.Publisher('instructiongraphs_status',String, queue_size=10)
+
+# Publishes goal
 GOAL = rospy.Publisher('instructiongraphs_goal',String, queue_size=10)
 IS_INIT = False
 

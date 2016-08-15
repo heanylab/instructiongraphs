@@ -9,10 +9,15 @@ described in https://www.cs.cmu.edu/~mmv/papers/14aamas-MericliEtAl.pdf.
 - ros-indigo-turtlebot-simulator (try `sudo apt-get install ros-indigo-turtlebot-simulator` on Ubuntu)
 
 ## Running the interpreter
-- `git clone https://github.com/anbenson/instructiongraphs`
+- `git clone https://github.com/anuragkanungo/instructiongraphs`
 - `cd instructiongraphs/IGinterpreter`
 - `roslaunch turtlebot_stage turtlebot_in_stage.launch &`
-- `./main.py getcoffee.ig`
+- `python main.py new.ig`
+
+### Alternately, run tbot using move_base
+- `roslaunch turtlebot_bringup minimal.launch`
+- `roslaunch turtlebot_navigation amcl_demo.launch`
+- `roslaunch turtlebot_rviz_launchers view_navigation.launch --screen`
 
 ## Notes about Implementation
 - The interpreter by default requires a running instance of the turtlebot
@@ -25,12 +30,15 @@ described in https://www.cs.cmu.edu/~mmv/papers/14aamas-MericliEtAl.pdf.
 - In order to detect obstacles, the interpreter relies on user input. Enter 'y',
   'yes', or an empty string to respond with 'yes', else 'no'.
 
-## Demo
-A short video demonstrating the 'getcoffee.ig' program in action is
-[here](https://www.andrew.cmu.edu/user/adbenson/research/ig_turtlebot_demo.mp4).
-You might wonder why I filmed it with a phone camera. This was mostly due to the
-fact that the turtlebot simulator bogged down my VM so badly that I was worried
-what a screencast program might do to it.
+## Checking run status and goal
+- `rostopic echo instructiongraphs_status`
+- `rostopic echo instructiongraphs_goal`
+
+## Writing a new instruction graph
+- Please refer to `IG implementation readme` in the root.
+
+## Understanding implementation of interpreter
+- Please refer to `Interpreter implementation readme` in  the root.
 
 ## Report
 The final report for 15-400 is in the `report` subdirectory. The paper itself is

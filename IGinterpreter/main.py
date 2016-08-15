@@ -18,7 +18,9 @@ if __name__ == "__main__":
   if len(sys.argv) != 2:
     print "Use: main.py <IG program>"
     exit(1)
-    publisher.initialize()
+  # Initializes node if not already initialized.
+  publisher.initialize()
+  # Publishes started message.
   publisher.publish("Starting")
   try:
     igfile = open(sys.argv[1], "r")
