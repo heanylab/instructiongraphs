@@ -12,13 +12,12 @@ described in https://www.cs.cmu.edu/~mmv/papers/14aamas-MericliEtAl.pdf.
 - `git clone https://github.com/anuragkanungo/instructiongraphs`
 - `cd instructiongraphs/IGinterpreter`
 
-For Ubuntu 14.04 with ROS indigo, set world and map file paths
-`export TURTLEBOT_STAGE_WORLD_FILE="/opt/ros/indigo/share/turtlebot_stage/maps/stage/maze.world"`
-`export TURTLEBOT_STAGE_MAP_FILE="/opt/ros/indigo/share/turtlebot_stage/maps/maze.yaml"`
+For Ubuntu 14.04 with ROS indigo, set world and map file paths:
+- `export TURTLEBOT_STAGE_WORLD_FILE="/opt/ros/indigo/share/turtlebot_stage/maps/stage/maze.world"`
+- `export TURTLEBOT_STAGE_MAP_FILE="/opt/ros/indigo/share/turtlebot_stage/maps/maze.yaml"`
 
 - `roslaunch turtlebot_stage turtlebot_in_stage.launch &`
 - `python main.py new.ig`
-
 
 ### Alternately, run tbot using move_base
 - `roslaunch turtlebot_bringup minimal.launch`
