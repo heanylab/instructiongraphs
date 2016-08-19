@@ -16,6 +16,7 @@ For Ubuntu 14.04 with ROS indigo, set world and map file paths:
 - `export TURTLEBOT_STAGE_WORLD_FILE="/opt/ros/indigo/share/turtlebot_stage/maps/stage/maze.world"`
 - `export TURTLEBOT_STAGE_MAP_FILE="/opt/ros/indigo/share/turtlebot_stage/maps/maze.yaml"`
 
+Launch the simulator and the intepreter:
 - `roslaunch turtlebot_stage turtlebot_in_stage.launch &`
 - `python main.py new.ig`
 
